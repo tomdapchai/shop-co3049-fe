@@ -1,8 +1,0 @@
-{
-  "/(user)/(main)/(home)/page": "app/(user)/(main)/(home)/page.js",
-  "/(user)/(main)/product/[slug]/page": "app/(user)/(main)/product/[slug]/page.js",
-  "/(user)/(auth)/sign-in/page": "app/(user)/(auth)/sign-in/page.js",
-  "/(user)/(main)/shop/page": "app/(user)/(main)/shop/page.js",
-  "/(user)/[...not-found]/page": "app/(user)/[...not-found]/page.js",
-  "/(user)/(main)/profile/[userId]/detail/page": "app/(user)/(main)/profile/[userId]/detail/page.js"
-}
