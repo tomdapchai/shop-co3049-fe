@@ -3,6 +3,7 @@
 import React from "react";
 import { useCart } from "@/context/CartContext";
 import { useAuth } from "@/context/AuthContext";
+import { useProduct } from "@/context/ProductContext";
 import { formatPrice } from "@/lib/utils";
 import Link from "next/link";
 import Image from "next/image";
@@ -18,6 +19,7 @@ export default function CheckoutPage() {
     const { userId, isLoggedIn } = useAuth();
     const { toast } = useToast();
     const router = useRouter();
+    const { siteInfo } = useProduct();
     const calculateTotal = () => {
         return cart.reduce((total, item) => {
             return total + item.productPrice * item.quantity;
@@ -27,6 +29,7 @@ export default function CheckoutPage() {
     const handleSubmit = async (data: z.infer<typeof addressFormSchema>) => {
         // Here you would typically send the order data to your backend
         const { streetAddress, city, province, ...rest } = data;
+
         console.log("Order submitted:", {
             userId,
             ...rest,
@@ -78,7 +81,14 @@ export default function CheckoutPage() {
             <div className="flex flex-col w-full h-[400px] relative justify-center items-center overflow-hidden">
                 <div className="absolute inset-0 bg-[url('/images/banner.jpg')] bg-cover bg-center bg-no-repeat filter blur-sm"></div>
                 <div className="absolute inset-0 bg-white/10"></div>
-                <Image src={logoImg} alt="Furniro" priority className="z-10" />
+                <Image
+                    src={siteInfo?.logo || logoImg}
+                    alt="Furniro"
+                    width={100}
+                    height={100}
+                    priority
+                    className="z-10"
+                />
                 <h1 className="relative z-10 font-bold text-6xl text-sub">
                     Checkout
                 </h1>

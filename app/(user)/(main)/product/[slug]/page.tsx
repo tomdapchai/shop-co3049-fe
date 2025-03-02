@@ -30,10 +30,11 @@ import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
 import { useProduct } from "@/context/ProductContext";
 import ProductCard from "@/components/card/ProductCard";
+import ProductComparison from "@/components/decoration/ProductComparison";
 
 const page = ({ params }: { params: Promise<{ slug: string }> }) => {
     const { addToCart } = useCart();
-    const { products } = useProduct();
+    const { products, extensions } = useProduct();
     const { slug } = use(params);
     const { userId, isLoggedIn, user } = useAuth();
     const [product, setProduct] = useState<ProductDetail>();
@@ -280,9 +281,7 @@ const page = ({ params }: { params: Promise<{ slug: string }> }) => {
                                                             style={{
                                                                 backgroundColor:
                                                                     // @ts-ignore
-                                                                    colorMapping[
-                                                                        color
-                                                                    ],
+                                                                    color,
                                                             }}
                                                             aria-label={`Select ${color} color`}
                                                         />
@@ -385,6 +384,12 @@ const page = ({ params }: { params: Promise<{ slug: string }> }) => {
                     <TabsTrigger value="reviews">
                         Reviews ({product.reviews.length})
                     </TabsTrigger>
+                    {extensions.find((ex) => ex.id == "price-comparison")
+                        ?.enabled && (
+                        <TabsTrigger value="comparision">
+                            Price Comparision
+                        </TabsTrigger>
+                    )}
                 </TabsList>
                 <TabsContent
                     value="description"
@@ -429,6 +434,17 @@ const page = ({ params }: { params: Promise<{ slug: string }> }) => {
                         </div>
                     </div>
                 </TabsContent>
+                {extensions.find((ex) => ex.id == "price-comparison")
+                    ?.enabled && (
+                    <TabsContent
+                        value="comparision"
+                        className="space-y-4 w-full">
+                        <ProductComparison
+                            currentProduct={product}
+                            products={products}
+                        />
+                    </TabsContent>
+                )}
             </Tabs>
 
             <Separator className="mt-10 mb-6" />

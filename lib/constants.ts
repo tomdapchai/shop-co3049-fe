@@ -1,10 +1,16 @@
-export const links = [
+import { navLink } from "@/types";
+
+export const links: navLink[] = [
     {
         title: "Home",
         url: "/",
     },
     {
-        title: "Shop",
+        title: "Products",
+        url: "/shop",
+    },
+    {
+        title: "Rooms",
         url: "/shop",
     },
     {

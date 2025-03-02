@@ -50,9 +50,13 @@ export default function ProductCartCard({
                             <p className="font-bold text-lg">
                                 {product.quantity} x {product.productName}
                             </p>
-                            <p className="text-muted-foreground text-sm">
-                                Size: {product.size}, Color: {product.color}
-                            </p>
+                            <div className="text-muted-foreground text-sm flex justify-start items-center space-x-2">
+                                <p>Size: {product.size}, Color: </p>
+                                <Button
+                                    size="icon"
+                                    style={{ background: product.color }}
+                                    className="rounded-full h-[20px] w-[20px] select-none cursor-default"></Button>
+                            </div>
                             {product.productPrice && (
                                 <p className="font-semibold">
                                     {formatPrice(product.productPrice)}

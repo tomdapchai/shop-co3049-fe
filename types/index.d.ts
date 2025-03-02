@@ -154,6 +154,7 @@ export type Blog = {
     content: string;
     tags?: string[]; // JSON array referencing TAG.tagName
     contentOriginal?: string;
+    overview?: string;
 };
 
 export type BlogTrue = {
@@ -163,6 +164,7 @@ export type BlogTrue = {
     tags: string[];
     posted: string;
     contentOriginal?: string;
+    overview?: string;
 };
 
 export type Tag = {
@@ -175,4 +177,56 @@ export type siteInfo = {
     phoneNumber: string;
     address: string;
     email: string;
+    logo: string;
+    homeBanner: string;
+    themeColor: string;
 };
+
+export type subcriber = {
+    id: string;
+    email: string;
+};
+
+export type extension = {
+    id: string;
+    name: string;
+    description?: string;
+    installed: boolean;
+    enabled: boolean;
+};
+
+export type socialMedia = {
+    id: string;
+    name: string;
+    info: string;
+    image: string;
+};
+
+export type advertisement = {
+    title: string;
+    image: string;
+    link?: string;
+    enable: boolean;
+};
+
+export type navMenu = {
+    title: string;
+    url: string;
+};
+
+export type category = {
+    categoryId: string;
+    name: string;
+    image: string;
+};
+
+export type room = {
+    roomId: string;
+    name: string;
+    image: string;
+};
+
+export type navLink = {
+    url: string;
+    title: string;
+}

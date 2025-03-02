@@ -23,16 +23,21 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useAuth } from "@/context/AuthContext";
 import { useCart } from "@/context/CartContext";
-import { links } from "@/lib/constants";
 import { Separator } from "../ui/separator";
 import ProductCartCard from "../card/ProductCartCard";
 import { useRouter } from "next/navigation";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { ProductSearch } from "../dialog/SearchDialog";
 import { updateCart } from "@/services/UserService";
+import { useProduct } from "@/context/ProductContext";
+import { category } from "@/types";
+import ProductCategoriesMenu from "../ProductCategoriesMenu";
+import ProductRoomsMenu from "../ProductRoomMenu";
+
 const Header = () => {
     // const {userId} = useAuth();
     const { isLoggedIn, logoutUser, userId, user } = useAuth();
+    const { categories, siteInfo, rooms, navLinks } = useProduct();
     const {
         cart,
         test,
@@ -79,25 +84,40 @@ const Header = () => {
             <div className="flex justify-between items-center gap-2">
                 <Link href="/">
                     <Image
-                        src={"/images/logo.png"}
+                        src={siteInfo?.logo || "/images/logo.png"}
                         alt="logo"
                         width={50}
                         height={50}
                     />
                 </Link>
-                <h1 className="font-bold text-xl">Furniro</h1>
+                <h1 className="font-bold text-xl">Furnora</h1>
             </div>
 
             {isLargeScreen ? (
                 <>
                     <div className="flex justify-between items-center gap-10">
-                        {links.map((link) => (
-                            <Link key={link.title} href={link.url}>
-                                <Button variant="link" className="font-bold">
-                                    {link.title}
-                                </Button>
-                            </Link>
-                        ))}
+                        {navLinks.map((link) =>
+                            link.title !== "Products" &&
+                            link.title !== "Rooms" ? (
+                                <Link key={link.title} href={link.url}>
+                                    <Button
+                                        variant="link"
+                                        className="font-bold">
+                                        {link.title}
+                                    </Button>
+                                </Link>
+                            ) : link.title === "Products" ? (
+                                <ProductCategoriesMenu
+                                    key={link.title}
+                                    categories={categories}
+                                />
+                            ) : (
+                                <ProductRoomsMenu
+                                    key={link.title}
+                                    rooms={rooms}
+                                />
+                            )
+                        )}
                     </div>
 
                     <div className="flex justify-between items-center gap-4">
@@ -255,7 +275,7 @@ const Header = () => {
                             </SheetHeader>
                             <div className="flex flex-col space-y-4">
                                 <div className="flex flex-col justify-start items-start">
-                                    {links.map((link) => (
+                                    {navLinks.map((link) => (
                                         <div
                                             className="w-full"
                                             key={link.title}>

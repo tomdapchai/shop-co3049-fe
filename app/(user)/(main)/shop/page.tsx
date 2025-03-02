@@ -136,15 +136,20 @@ const page = () => {
                             {indexOfLastProduct} of {queryProducts.length}{" "}
                             products
                         </p>
-                        <Button variant={"ghost"} onClick={() => {}}>
-                            Filter
-                        </Button>
                     </div>
                     <div className="flex justify-between items-center gap-2">
                         {searchParams && searchParams[1] && (
                             <Button
                                 variant="outline"
-                                onClick={() => setQuery("")}>
+                                onClick={() => {
+                                    setQuery("");
+                                    // reset the url - remove the query part
+                                    window.history.replaceState(
+                                        {},
+                                        "",
+                                        window.location.pathname
+                                    );
+                                }}>
                                 Clear search
                             </Button>
                         )}

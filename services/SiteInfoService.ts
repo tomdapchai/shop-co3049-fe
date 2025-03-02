@@ -5,14 +5,25 @@ export const getSiteInfo = async (): Promise<siteInfo | { error: string }> => {
     try {
         const response = await api.get("api/siteInfo/routes.php");
         console.log("Backend Response:", response.data.data);
-        const { about, about_original, address, email, phone_number } =
-            response.data.data;
+        const {
+            about,
+            about_original,
+            address,
+            email,
+            phone_number,
+            logo,
+            home_banner,
+            theme_color,
+        } = response.data.data;
         return {
             about,
             aboutOriginal: about_original,
             address,
             email,
             phoneNumber: phone_number,
+            logo,
+            homeBanner: home_banner,
+            themeColor: theme_color,
         };
     } catch (error) {
         console.log("Error fetching site info:", error);

@@ -1,3 +1,6 @@
+import { info } from "console";
+import { link } from "fs";
+import { title } from "process";
 import * as z from "zod";
 
 export const SignInSchema = z.object({
@@ -69,6 +72,7 @@ export const blogSchema = z.object({
             "Blog ID must contain only lowercase letters, numbers, and hyphens"
         ),
     content: z.string().min(1, "Content is required"),
+    overview: z.string().optional(),
     tags: z.array(z.string()),
 });
 
@@ -102,4 +106,48 @@ export const siteInfoSchema = z.object({
     address: z.string(),
     phoneNumber: z.string(),
     email: z.string().email(),
+    logo: z.string(),
+    homeBanner: z.string(),
+    themeColor: z.string(),
+});
+
+export const categorySchema = z.object({
+    categoryId: z.string().min(1, "Category ID is required"),
+    name: z.string().min(1, "Name is required"),
+    image: z.string().min(1, "Image is required"),
+});
+
+export const roomSchema = z.object({
+    roomId: z.string().min(1, "Room ID is required"),
+    name: z.string().min(1, "Name is required"),
+    image: z.string().min(1, "Image is required"),
+});
+
+export const subcriberSchema = z.object({
+    email: z.string().email(),
+});
+
+export const socialSchema = z.object({
+    id: z.string().min(1, "ID is required"),
+    name: z.string().min(1, "Name is required"),
+    info: z.string().min(1, "Info is required"),
+    image: z.string().min(1, "Image is required"),
+});
+
+export const extensionSchema = z.object({
+    name: z.string().min(1, "Name is required"),
+    installed: z.boolean(),
+    enabled: z.boolean(),
+});
+
+export const advertisementSchema = z.object({
+    title: z.string().min(1, "Title is required"),
+    image: z.string().min(1, "Image is required"),
+    link: z.string().optional(),
+    enable: z.boolean(),
+});
+
+export const navLinkSchema = z.object({
+    title: z.string().min(1, "Title is required"),
+    url: z.string().min(1, "URL is required"),
 });

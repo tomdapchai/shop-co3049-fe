@@ -16,6 +16,7 @@ export const GetAllBlogs = async (): Promise<
                 tags: JSON.parse(blog.tags),
                 posted: blog.posted,
                 contentOriginal: blog.content_original,
+                overview: blog.overview,
             };
         });
 
@@ -33,7 +34,7 @@ export const GetBlogById = async (
         const response = await api.get(`api/blog/routes.php?blogId=${blogId}`);
 
         console.log("Backend Response:", response.data);
-        const { title, content, tags, posted, content_original } =
+        const { title, content, tags, posted, content_original, overview } =
             response.data.data;
 
         return {
@@ -43,6 +44,7 @@ export const GetBlogById = async (
             tags: JSON.parse(tags),
             posted,
             contentOriginal: content_original,
+            overview,
         };
     } catch (error) {
         console.log("Error:", error);

@@ -32,8 +32,6 @@ import { getAllContacts } from "@/services/ContactService";
 
 const CONTACTS_PER_PAGE = 20;
 
-// Mock data - replace this with actual data fetching logic
-
 export default function ContactPage() {
     const [contacts, setContacts] = useState<Contact[]>([]);
     const [searchQuery, setSearchQuery] = useState("");

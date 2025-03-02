@@ -48,6 +48,7 @@ import { useRouter } from "next/navigation";
 import { getReviewsByProductId } from "@/services/ReviewService";
 import { ReviewSection } from "@/components/ReviewSection";
 import Image from "next/image";
+import { ColorPickerGroup } from "@/components/input/ColorPickerGroup";
 
 export default function ProductDetailPage() {
     const params = useParams();
@@ -574,10 +575,16 @@ export default function ProductDetailPage() {
                                 render={({ field }) => (
                                     <FormItem className="w-full flex-1">
                                         <FormLabel>Colors</FormLabel>
-                                        <CheckboxGroup
+                                        {/* <CheckboxGroup
                                             name="color"
                                             items={colorOptions}
                                             control={form.control}
+                                            isEditing={isEditing}
+                                        /> */}
+                                        <ColorPickerGroup
+                                            name="color"
+                                            value={field.value}
+                                            onChange={field.onChange}
                                             isEditing={isEditing}
                                         />
                                         <FormDescription>
@@ -588,7 +595,6 @@ export default function ProductDetailPage() {
                                     </FormItem>
                                 )}
                             />
-                            <ColorMapping />
                             <FormField
                                 control={form.control}
                                 name="shortDescription"

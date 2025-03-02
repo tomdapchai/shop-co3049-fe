@@ -39,6 +39,9 @@ import { productSchema } from "@/lib/validation";
 import { sizeOptions, colorOptions } from "@/lib/constants";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import { ColorPickerGroup } from "@/components/input/ColorPickerGroup";
+import { ColorPicker } from "antd";
+
 type ProductFormValues = z.infer<typeof productSchema>;
 
 export default function CreateProductPage() {
@@ -461,10 +464,10 @@ export default function CreateProductPage() {
                                 render={({ field }) => (
                                     <FormItem className="w-full flex-1">
                                         <FormLabel>Colors</FormLabel>
-                                        <CheckboxGroup
+                                        <ColorPickerGroup
                                             name="color"
-                                            items={colorOptions}
-                                            control={form.control}
+                                            value={field.value || []}
+                                            onChange={field.onChange}
                                             isEditing={true}
                                         />
                                         <FormDescription>
@@ -475,7 +478,6 @@ export default function CreateProductPage() {
                                     </FormItem>
                                 )}
                             />
-                            <ColorMapping />
                             <FormField
                                 control={form.control}
                                 name="shortDescription"

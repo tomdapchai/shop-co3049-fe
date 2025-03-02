@@ -54,6 +54,7 @@ export default function BlogCreator() {
             title: "",
             blogId: "",
             content: "",
+            overview: "",
             tags: [],
         },
     });
@@ -354,6 +355,22 @@ export default function BlogCreator() {
                                     )}
                                 />
                             </div>
+                            <FormField
+                                control={form.control}
+                                name="overview"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Overview</FormLabel>
+                                        <FormControl>
+                                            <Textarea
+                                                placeholder="Write your blog overview here..."
+                                                {...field}
+                                            />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
                             <FormField
                                 control={form.control}
                                 name="content"

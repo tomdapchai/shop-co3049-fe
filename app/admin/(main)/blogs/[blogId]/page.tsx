@@ -62,6 +62,7 @@ const page = () => {
             title: "",
             blogId: "",
             content: "",
+            overview: "",
             tags: [],
         },
     });
@@ -78,6 +79,7 @@ const page = () => {
                     content: data.contentOriginal,
                     tags: data.tags,
                     blogId: data.blogId,
+                    overview: data.overview || "",
                 });
             }
         });
@@ -342,6 +344,7 @@ const page = () => {
                 tags,
                 content: convertedContent,
                 contentOriginal: data.content,
+                overview: data.overview,
             })
                 .then((res) => {
                     if ("error" in res) {
@@ -458,6 +461,23 @@ const page = () => {
                                     )}
                                 />
                             </div>
+                            <FormField
+                                control={form.control}
+                                name="overview"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Overview</FormLabel>
+                                        <FormControl>
+                                            <Textarea
+                                                placeholder="Enter blog overview"
+                                                {...field}
+                                                disabled={!isEditing}
+                                            />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
                             <FormField
                                 control={form.control}
                                 name="content"

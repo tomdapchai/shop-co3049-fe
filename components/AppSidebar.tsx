@@ -24,6 +24,7 @@ import {
 import Link from "next/link";
 import { Button } from "./ui/button";
 import { useRouter } from "next/navigation";
+import { title } from "process";
 // Menu items.
 const items = [
     {
@@ -40,6 +41,16 @@ const items = [
         title: "Products",
         url: "/admin/products",
         icon: NotebookText,
+    },
+    {
+        title: "Categories",
+        url: "/admin/category",
+        icon: Calendar,
+    },
+    {
+        title: "Rooms",
+        url: "/admin/room",
+        icon: Printer,
     },
     {
         title: "Blogs",
@@ -72,8 +83,33 @@ const items = [
         icon: Calendar,
     },
     {
+        title: "Subscribers",
+        url: "/admin/subscriber",
+        icon: Calendar,
+    },
+    {
+        title: "Social media",
+        url: "/admin/social-media",
+        icon: Calendar,
+    },
+    {
+        title: "Nav Menu",
+        url: "/admin/nav",
+        icon: Calendar,
+    },
+    {
         title: "Settings",
         url: "/admin/siteInfo",
+        icon: Settings,
+    },
+    /* {
+        title: "Advertisement",
+        url: "/admin/advertisement",
+        icon: Settings,
+    }, */
+    {
+        title: "Extensions",
+        url: "/admin/extension",
         icon: Settings,
     },
 ];

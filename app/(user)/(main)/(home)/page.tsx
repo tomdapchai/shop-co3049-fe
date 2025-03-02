@@ -10,26 +10,40 @@ import { useRouter } from "next/navigation";
 import { getAllProduct } from "@/services/ProductService";
 import { Product, ProductDetail, ProductView } from "@/types";
 import { useProduct } from "@/context/ProductContext";
+import { AdvertisementPopup } from "@/components/userLayout/AdvertisePop";
+import { Input } from "@/components/ui/input";
+import { SubscribeForm } from "@/components/form/SubscribeForm";
+import ForYou from "@/components/decoration/ForYou";
+import ProductReviewCarousel from "@/components/decoration/FeedbackCarousel";
+import { Separator } from "@radix-ui/react-separator";
+import ServiceFeatures from "@/components/userLayout/ServiceFeatures";
+
 const page = () => {
-    const { products } = useProduct();
+    const { products, advertisement, siteInfo, isAdShown, extensions } =
+        useProduct();
     const [productImages, setProductImages] = useState<ProductDetail[]>([]);
     useEffect(() => {
-        /* getAllProduct().then((data) => {
-            if ("error" in data) {
-                console.error(data.error);
-            } else {
-                console.log("Products:", data);
-                data.slice(0, 8);
-                setProductImages(data);
-            }
-        }); */
-        console.log("Products in home:", products);
         setProductImages(products.slice(0, 8));
     }, []);
     const router = useRouter();
     return (
-        <div className="w-full h-full flex flex-col gap-10 pb-8">
-            <section className="bg-[url('/images/banner.jpg')] bg-cover bg-bottom bg-no-repeat h-screen flex justify-end items-center max-md:justify-center">
+        <div
+            style={{
+                background: siteInfo?.themeColor || "#ffffff",
+            }}
+            className="w-full h-full flex flex-col gap-10 pb-8">
+            {advertisement.enable &&
+                extensions.find((ex) => ex.id == "advertisement")?.enabled &&
+                !isAdShown && (
+                    <AdvertisementPopup advertisement={advertisement} />
+                )}
+            <section
+                style={{
+                    backgroundImage: `url(${
+                        siteInfo?.homeBanner || "/images/banner.jpg"
+                    })`,
+                }}
+                className="bg-cover bg-bottom bg-no-repeat h-screen flex justify-end items-center max-md:justify-center">
                 <div className="flex flex-col bg-main space-y-8 w-[600px] max-md:w-[400px] max-sm:w-[300px] rounded-lg md:mr-40 p-10">
                     <div className="flex flex-col gap-4">
                         <p className="text-black font-bold text-lg">
@@ -51,6 +65,13 @@ const page = () => {
                     </Button>
                 </div>
             </section>
+
+            {/* For you */}
+            {extensions.find((ex) => ex.id == "products-for-you")?.enabled && (
+                <section className="flex flex-col justify-center items-center w-full gap-14 max-md:p-4">
+                    <ForYou products={products} />
+                </section>
+            )}
 
             <section className="flex flex-col justify-center items-center w-full gap-14 max-md:p-4">
                 <div className="flex justify-center items-center flex-col">
@@ -116,16 +137,31 @@ const page = () => {
                 </div>
             </section>
 
-            <section className="flex flex-col justify-center items-center w-full gap-8 bg-main px-4 py-6">
-                <div className="flex flex-col justify-center items-center space-y-4">
-                    <p className="font-bold text-gray-400 text-lg">
-                        Share your setup with
-                    </p>
-                    <h1 className="font-bold text-3xl">#FuniroFurniture</h1>
-                </div>
-                <div className="w-full flex justify-center items-center">
-                    <Slideshow />
-                </div>
+            {extensions.find((ex) => ex.id == "image-gallery")?.enabled && (
+                <section className="flex flex-col justify-center items-center w-full gap-8 bg-main px-4 py-6">
+                    <div className="flex flex-col justify-center items-center space-y-4">
+                        <p className="font-bold text-gray-400 text-lg">
+                            Share your setup with
+                        </p>
+                        <h1 className="font-bold text-3xl">
+                            #FurnoraFurniture
+                        </h1>
+                    </div>
+                    <div className="w-full flex justify-center items-center">
+                        <Slideshow />
+                    </div>
+                </section>
+            )}
+
+            {extensions.find((ex) => ex.id == "feedback-carousel")?.enabled && (
+                <section className="flex flex-col justify-center items-center w-full ">
+                    <ProductReviewCarousel products={products} />
+                </section>
+            )}
+
+            <Separator className="border-b-2" />
+            <section className="flex flex-col justify-center items-center w-full bg-white">
+                <SubscribeForm />
             </section>
         </div>
     );
