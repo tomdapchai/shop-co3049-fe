@@ -618,7 +618,7 @@ export default function SiteInfo() {
                                                 ) =>
                                                     (editorRef.current = editor)
                                                 }
-                                                intialValue={field.value}
+                                                initialValue={field.value}
                                                 value={field.value}
                                                 init={{
                                                     height: 500,

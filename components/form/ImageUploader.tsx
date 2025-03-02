@@ -5,7 +5,6 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Check } from "lucide-react";
 import { UploadedImage } from "@/app/admin/(main)/blogs/create/page";
 import { Copy } from "lucide-react";
-import imagemin from "imagemin";
 
 /* type UploadedImage = {
     alt: string;

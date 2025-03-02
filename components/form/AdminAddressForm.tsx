@@ -230,7 +230,7 @@ export default function AdminAddressForm({
                                         field.onChange(value);
                                         setRegion(value);
                                     }}
-                                    classes="w-full border border-gray-300 rounded-md px-3 py-2"
+                                    className="w-full border border-gray-300 rounded-md px-3 py-2"
                                     valueType="full"
                                     disableWhenEmpty={true}
                                     defaultOptionLabel="Select Province"
