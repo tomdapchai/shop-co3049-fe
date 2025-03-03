@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { useCart } from "@/context/CartContext";
 import { useAuth } from "@/context/AuthContext";
 import { useProduct } from "@/context/ProductContext";
@@ -14,36 +14,83 @@ import { createOrder } from "@/services/OrderServices";
 import * as z from "zod";
 import { addressFormSchema } from "@/lib/validation";
 import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { validateCoupon } from "@/services/CouponService";
+import { Loader2 } from "lucide-react";
+
 export default function CheckoutPage() {
     const { cart, clearCart, clearCartUser } = useCart();
     const { userId, isLoggedIn } = useAuth();
     const { toast } = useToast();
     const router = useRouter();
     const { siteInfo } = useProduct();
+    const [couponCode, setCouponCode] = useState("");
+    const [discount, setDiscount] = useState(0);
+    const [validatingCoupon, setValidatingCoupon] = useState(false);
+    const [appliedCoupon, setAppliedCoupon] = useState("");
+
+    const subtotal = cart.reduce((total, item) => {
+        return total + item.productPrice * item.quantity;
+    }, 0);
+
     const calculateTotal = () => {
-        return cart.reduce((total, item) => {
-            return total + item.productPrice * item.quantity;
-        }, 0);
+        if (discount > 0) {
+            return subtotal - (subtotal * discount) / 100;
+        }
+        return subtotal;
+    };
+
+    const handleApplyCoupon = async () => {
+        if (!couponCode) return;
+        setValidatingCoupon(true);
+
+        try {
+            const result = await validateCoupon(couponCode);
+            if ("error" in result) {
+                toast({
+                    title: "Invalid coupon",
+                    description: "The coupon code you entered is not valid.",
+                    variant: "destructive",
+                });
+                setDiscount(0);
+                setAppliedCoupon("");
+            } else {
+                toast({
+                    title: "Coupon applied",
+                    description: `You got a ${result.discount}% discount!`,
+                });
+                setDiscount(result.discount);
+                setAppliedCoupon(couponCode);
+            }
+        } catch (error) {
+            toast({
+                title: "Error",
+                description: "Failed to validate coupon. Please try again.",
+                variant: "destructive",
+            });
+        } finally {
+            setValidatingCoupon(false);
+        }
+    };
+
+    const removeCoupon = () => {
+        setDiscount(0);
+        setAppliedCoupon("");
+        setCouponCode("");
     };
 
     const handleSubmit = async (data: z.infer<typeof addressFormSchema>) => {
-        // Here you would typically send the order data to your backend
         const { streetAddress, city, province, ...rest } = data;
 
-        console.log("Order submitted:", {
-            userId,
-            ...rest,
-            address: `${streetAddress}, ${city}, ${province}`,
-            products: cart,
-            total: calculateTotal(),
-        });
-
+        console.log("discount: ", discount);
         await createOrder({
             userId: isLoggedIn ? userId : null,
             ...rest,
             address: `${streetAddress}, ${city}, ${province}`,
             products: cart,
             total: calculateTotal(),
+            discount: discount > 0 ? discount : undefined, // Only include if discount exists
         })
             .then((res) => {
                 if ("error" in res) {
@@ -67,11 +114,6 @@ export default function CheckoutPage() {
                 if (!isLoggedIn) clearCart();
                 else clearCartUser();
             });
-        // Show a success message to the user
-
-        // You might want to clear the cart or redirect the user after a successful order
-        // clearCart()
-        // router.push('/order-confirmation')
     };
 
     return (
@@ -132,6 +174,71 @@ export default function CheckoutPage() {
                                 </span>
                             </div>
                         ))}
+
+                        {/* Coupon Section */}
+                        <div className="pt-4 pb-2 border-t mt-4">
+                            <h3 className="font-semibold mb-2">Promo Code</h3>
+                            {!appliedCoupon ? (
+                                <div className="flex space-x-2">
+                                    <Input
+                                        placeholder="Enter coupon code"
+                                        value={couponCode}
+                                        onChange={(e) =>
+                                            setCouponCode(e.target.value)
+                                        }
+                                    />
+                                    <Button
+                                        onClick={handleApplyCoupon}
+                                        disabled={
+                                            validatingCoupon || !couponCode
+                                        }
+                                        className="whitespace-nowrap">
+                                        {validatingCoupon ? (
+                                            <Loader2 className="h-4 w-4 animate-spin" />
+                                        ) : (
+                                            "Apply"
+                                        )}
+                                    </Button>
+                                </div>
+                            ) : (
+                                <div className="flex justify-between items-center bg-green-50 border border-green-200 rounded p-2">
+                                    <div>
+                                        <span className="font-medium text-green-600">
+                                            {appliedCoupon}
+                                        </span>
+                                        <span className="ml-2 text-sm text-gray-600">
+                                            ({discount}% off)
+                                        </span>
+                                    </div>
+                                    <Button
+                                        variant="ghost"
+                                        onClick={removeCoupon}
+                                        className="h-8 text-sm text-red-500 hover:text-red-700">
+                                        Remove
+                                    </Button>
+                                </div>
+                            )}
+                        </div>
+
+                        {/* Order summary */}
+                        <div className="flex justify-between pt-4 border-t mt-4">
+                            <span className="text-gray-700">Subtotal</span>
+                            <span className="font-medium">
+                                {formatPrice(subtotal)}
+                            </span>
+                        </div>
+
+                        {discount > 0 && (
+                            <div className="flex justify-between pt-2">
+                                <span className="text-gray-700">
+                                    Discount ({discount}%)
+                                </span>
+                                <span className="font-medium text-green-600">
+                                    -{formatPrice((subtotal * discount) / 100)}
+                                </span>
+                            </div>
+                        )}
+
                         <div className="flex justify-between pt-2">
                             <span className="text-gray-700">Total</span>
                             <span className="text-yellow-500 font-extrabold text-lg">

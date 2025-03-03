@@ -1,16 +1,19 @@
 import api from "@/api";
 import { subcriber } from "@/types";
 
+export type subcribeReceive = subcriber & { sendAt: string };
+
 export const getAllSubscribers = async (): Promise<
-    subcriber[] | { error: string }
+    subcribeReceive[] | { error: string }
 > => {
     try {
         const response = await api.get(`api/subscribe/routes.php`);
         console.log("Backend Response:", response.data);
-        const res: subcriber[] = response.data.data.map((sub: any) => {
+        const res: subcribeReceive[] = response.data.data.map((sub: any) => {
             return {
                 id: sub.subcribe_id,
                 email: sub.email,
+                sendAt: sub.sendAt,
             };
         });
         return res;

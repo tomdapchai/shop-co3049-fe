@@ -27,18 +27,21 @@ import {
     PaginationNext,
     PaginationPrevious,
 } from "@/components/ui/pagination";
-import { Contact } from "@/types";
-import { getAllContacts } from "@/services/ContactService";
+import { ArrowUpDown } from "lucide-react";
+import { getAllContacts, ContactReceive } from "@/services/ContactService";
 
 const CONTACTS_PER_PAGE = 20;
 
+type SortKey = "sendAt" | "contactId";
+
 export default function ContactPage() {
-    const [contacts, setContacts] = useState<Contact[]>([]);
+    const [contacts, setContacts] = useState<ContactReceive[]>([]);
     const [searchQuery, setSearchQuery] = useState("");
     const [currentPage, setCurrentPage] = useState(1);
-    const [selectedContact, setSelectedContact] = useState<Contact | null>(
-        null
-    );
+    const [selectedContact, setSelectedContact] =
+        useState<ContactReceive | null>(null);
+    const [sortKey, setSortKey] = useState<SortKey>("sendAt");
+    const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
@@ -57,6 +60,29 @@ export default function ContactPage() {
         return <div>Loading...</div>;
     }
 
+    const handleSort = (key: SortKey) => {
+        setSortKey(key);
+        setSortOrder((prev) => (prev === "asc" ? "desc" : "asc"));
+    };
+
+    const SortButton = ({ column }: { column: SortKey }) => (
+        <Button
+            variant="ghost"
+            onClick={() => handleSort(column)}
+            className="h-8 w-8 p-0">
+            <span className="sr-only">Sort by {column}</span>
+            <ArrowUpDown className="h-4 w-4" />
+        </Button>
+    );
+
+    const sortContacts = (contactsToSort: typeof contacts) => {
+        return [...contactsToSort].sort((a, b) => {
+            if (a[sortKey] < b[sortKey]) return sortOrder === "asc" ? -1 : 1;
+            if (a[sortKey] > b[sortKey]) return sortOrder === "asc" ? 1 : -1;
+            return 0;
+        });
+    };
+
     const filteredContacts = contacts.filter((contact) =>
         (
             contact.name.toLowerCase() +
@@ -67,12 +93,14 @@ export default function ContactPage() {
         ).includes(searchQuery.toLowerCase())
     );
 
-    const paginatedContacts = filteredContacts.slice(
+    const sortedContacts = sortContacts(filteredContacts);
+
+    const paginatedContacts = sortedContacts.slice(
         (currentPage - 1) * CONTACTS_PER_PAGE,
         currentPage * CONTACTS_PER_PAGE
     );
 
-    const totalPages = Math.ceil(filteredContacts.length / CONTACTS_PER_PAGE);
+    const totalPages = Math.ceil(sortedContacts.length / CONTACTS_PER_PAGE);
 
     return (
         <div className="container mx-auto py-10">
@@ -87,10 +115,15 @@ export default function ContactPage() {
                 <Table>
                     <TableHeader>
                         <TableRow>
-                            <TableHead>ID</TableHead>
+                            <TableHead>
+                                ID <SortButton column="contactId" />
+                            </TableHead>
                             <TableHead>Name</TableHead>
                             <TableHead>Email</TableHead>
                             <TableHead>Subject</TableHead>
+                            <TableHead>
+                                Timestamp <SortButton column="sendAt" />
+                            </TableHead>
                             <TableHead>Actions</TableHead>
                         </TableRow>
                     </TableHeader>
@@ -101,6 +134,9 @@ export default function ContactPage() {
                                 <TableCell>{contact.name}</TableCell>
                                 <TableCell>{contact.email}</TableCell>
                                 <TableCell>{contact.subject}</TableCell>
+                                <TableCell>
+                                    {new Date(contact.sendAt).toLocaleString()}
+                                </TableCell>
                                 <TableCell>
                                     <Button
                                         variant="outline"
@@ -171,6 +207,14 @@ export default function ContactPage() {
                     </DialogHeader>
                     {selectedContact && (
                         <div className="grid gap-4 py-4">
+                            <div>
+                                <h3 className="font-semibold">Sended At</h3>
+                                <p>
+                                    {new Date(
+                                        selectedContact.sendAt
+                                    ).toLocaleString()}
+                                </p>
+                            </div>
                             <div>
                                 <h3 className="font-semibold">Name</h3>
                                 <p>{selectedContact.name}</p>

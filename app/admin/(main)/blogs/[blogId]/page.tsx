@@ -32,7 +32,7 @@ import TagInput from "@/components/form/TagInput";
 import { convertToReact } from "@/lib/utils";
 import Image from "next/image";
 import { uploadToCDN } from "@/lib/utils";
-import { CreateBlog, DeleteBlog, UpdateBlog } from "@/services/BlogService";
+import { CreateBlog, UpdateBlog, DeleteBlog } from "@/services/BlogService";
 import {
     createBlogImage,
     deleteImage,
@@ -64,6 +64,7 @@ const page = () => {
             content: "",
             overview: "",
             tags: [],
+            thumbnail: "/images/banner.jpg",
         },
     });
 
@@ -115,6 +116,27 @@ const page = () => {
     if (!blog) {
         return <div>Loading blog...</div>;
     }
+
+    const handleDeleteBlog = async () => {
+        await DeleteBlog(blogId as string).then((res) => {
+            if ("error" in res) {
+                console.log(res.error);
+                toast({
+                    title: "Error",
+                    description: "Error deleting blog",
+                    variant: "destructive",
+                });
+                return;
+            } else {
+                toast({
+                    title: "Success",
+                    description: "Blog deleted successfully",
+                    variant: "default",
+                });
+            }
+        });
+        router.push("/admin/blogs");
+    };
 
     const handleImageUpload = (file: File) => {
         const blobURL = URL.createObjectURL(file);
@@ -203,7 +225,7 @@ const page = () => {
         setPreviewContent(convertToReact(processedContent));
     };
 
-    const hanldeSave = async (data: z.infer<typeof blogSchema>) => {
+    const handleSave = async (data: z.infer<typeof blogSchema>) => {
         try {
             setIsSaving(true);
             if (uploadedImages.length === 0) {
@@ -283,6 +305,8 @@ const page = () => {
 
             // do the same but uploadThumbnail is one image only
 
+            var tmpThumbSrc = ""
+
             const neededUploadThumbnail = uploadedThumbnail.src.startsWith(
                 "blob"
             )
@@ -292,6 +316,7 @@ const page = () => {
             if (neededUploadThumbnail) {
                 const url = await uploadToCDN(neededUploadThumbnail.file!);
                 if (typeof url === "string") {
+                    tmpThumbSrc = url
                     setUploadedThumbnail({
                         src: url,
                         alt: uploadedThumbnail.alt,
@@ -345,6 +370,7 @@ const page = () => {
                 content: convertedContent,
                 contentOriginal: data.content,
                 overview: data.overview,
+                thumbnail: tmpThumbSrc !== "" ? tmpThumbSrc : uploadedThumbnail.src,
             })
                 .then((res) => {
                     if ("error" in res) {
@@ -421,7 +447,7 @@ const page = () => {
         <div className="w-full ">
             <Form {...form}>
                 <form
-                    onSubmit={form.handleSubmit(hanldeSave)}
+                    onSubmit={form.handleSubmit(handleSave)}
                     className="space-y-8 p-4">
                     <div className="flex space-x-10">
                         <div className="w-3/4 space-y-4">
@@ -580,42 +606,52 @@ const page = () => {
                                     </FormItem>
                                 )}
                             />
-                            {isEditing ? (
-                                <div className="flex justify-start items-start space-x-4 w-fit">
-                                    <Button
-                                        type="submit"
-                                        className={`${
-                                            isSaving
-                                                ? "bg-[#030391]/20 cursor-not-allowed hover:bg-[#030391]/20 active:bg-[#030391]/20"
-                                                : "bg-sub hover:bg-main/90 active:bg-main/95"
-                                        } w-full relative`}>
-                                        {isSaving ? (
-                                            <div className="absolute inset-0 flex items-center justify-center">
-                                                <div className="animate-spin rounded-full h-3 w-3 border-b border-gray-900" />
-                                            </div>
-                                        ) : (
-                                            "Save changes"
-                                        )}
-                                    </Button>
-                                    {!isSaving && (
+                            <div className="flex justify-start items-center space-x-2">
+                                {isEditing ? (
+                                    <div className="flex justify-start items-start space-x-4 w-fit">
                                         <Button
-                                            onClick={(e) => {
-                                                e.preventDefault();
-                                                setIsEditing(false);
-                                            }}>
-                                            Cancel{" "}
+                                            type="submit"
+                                            className={`${
+                                                isSaving
+                                                    ? "bg-[#030391]/20 cursor-not-allowed hover:bg-[#030391]/20 active:bg-[#030391]/20"
+                                                    : "bg-sub hover:bg-main/90 active:bg-main/95"
+                                            } w-full relative`}>
+                                            {isSaving ? (
+                                                <div className="absolute inset-0 flex items-center justify-center">
+                                                    <div className="animate-spin rounded-full h-3 w-3 border-b border-gray-900" />
+                                                </div>
+                                            ) : (
+                                                "Save changes"
+                                            )}
                                         </Button>
-                                    )}
-                                </div>
-                            ) : (
+                                        {!isSaving && (
+                                            <Button
+                                                onClick={(e) => {
+                                                    e.preventDefault();
+                                                    setIsEditing(false);
+                                                }}>
+                                                Cancel{" "}
+                                            </Button>
+                                        )}
+                                    </div>
+                                ) : (
+                                    <Button
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            setIsEditing(true);
+                                        }}>
+                                        Edit Blog
+                                    </Button>
+                                )}
                                 <Button
                                     onClick={(e) => {
                                         e.preventDefault();
-                                        setIsEditing(true);
-                                    }}>
-                                    Edit Blog
+                                        handleDeleteBlog();
+                                    }}
+                                    className="bg-red-500 hover:bg-red-500/90">
+                                    Delete Blog
                                 </Button>
-                            )}
+                            </div>
                         </div>
                     </div>
                 </form>

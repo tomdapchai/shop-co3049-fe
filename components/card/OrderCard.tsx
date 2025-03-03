@@ -25,6 +25,14 @@ export default function OrderCard({
     onComplete = () => {},
     onCancel = () => {},
 }: OrderCardProps) {
+    // Calculate the subtotal (total before discount)
+    const subtotal = order.discount
+        ? order.total / (1 - order.discount / 100)
+        : order.total;
+
+    console.log("order", order);
+    console.log("discount", order.discount);
+
     return (
         <Card className="w-full max-w-4xl min-w-fit">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -104,15 +112,37 @@ export default function OrderCard({
                             ))}
                         </div>
                     </ScrollArea>
-                    <div className="flex justify-between items-center pt-4 border-t">
-                        <span className="font-semibold">Total:</span>
-                        <span className="font-semibold">
-                            {formatPrice(order.total)}
-                        </span>
+
+                    <div className="space-y-2 pt-4 border-t">
+                        {order.discount && (
+                            <>
+                                <div className="flex justify-between items-center">
+                                    <span className="text-sm">Subtotal:</span>
+                                    <span>{formatPrice(subtotal)}</span>
+                                </div>
+                                <div className="flex justify-between items-center">
+                                    <span className="text-sm">
+                                        Discount:
+                                        <span className="ml-1 text-green-600 font-medium">
+                                            ({order.discount}%)
+                                        </span>
+                                    </span>
+                                    <span className="text-green-600">
+                                        -{formatPrice(subtotal - order.total)}
+                                    </span>
+                                </div>
+                            </>
+                        )}
+                        <div className="flex justify-between items-center pt-2 border-t">
+                            <span className="font-semibold">Total:</span>
+                            <span className="font-semibold">
+                                {formatPrice(order.total)}
+                            </span>
+                        </div>
                     </div>
                 </div>
             </CardContent>
-            {admin && order.status == "pending" && (
+            {admin && order.status === "pending" && (
                 <CardFooter className="w-full flex justify-end items-center space-x-4">
                     <Button
                         className="bg-red-400 hover:bg-red-400/90"

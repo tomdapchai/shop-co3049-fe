@@ -84,6 +84,7 @@ export type Order = {
     status: string;
     createdAt: string;
     completedAt: string | null;
+    discount?: number;
     total: number;
 };
 
@@ -110,6 +111,7 @@ export type OrderCreate = {
     address: string;
     total: number;
     name: string;
+    discount?: number;
 };
 
 type Address = {
@@ -155,6 +157,7 @@ export type Blog = {
     tags?: string[]; // JSON array referencing TAG.tagName
     contentOriginal?: string;
     overview?: string;
+    thumbnail: string;
 };
 
 export type BlogTrue = {
@@ -165,6 +168,7 @@ export type BlogTrue = {
     posted: string;
     contentOriginal?: string;
     overview?: string;
+    thumbnail: string;
 };
 
 export type Tag = {
@@ -218,6 +222,7 @@ export type category = {
     categoryId: string;
     name: string;
     image: string;
+    // Add this property
 };
 
 export type room = {
@@ -229,4 +234,9 @@ export type room = {
 export type navLink = {
     url: string;
     title: string;
-}
+};
+
+export type coupon = {
+    code: string;
+    discount: number;
+};

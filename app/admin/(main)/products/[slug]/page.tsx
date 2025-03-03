@@ -11,7 +11,11 @@ import { Textarea } from "@/components/ui/textarea";
 import ImageUploader from "@/components/form/ImageUploader";
 import TagInput from "@/components/form/TagInput";
 import { Review } from "@/types";
-import { getProductBySlug, updateProduct } from "@/services/ProductService";
+import {
+    getProductBySlug,
+    updateProduct,
+    deleteProduct,
+} from "@/services/ProductService";
 import { UploadedImage } from "../../blogs/create/page";
 import {
     Form,
@@ -133,6 +137,25 @@ export default function ProductDetailPage() {
     if (!product) {
         return <div>Loading...</div>;
     }
+
+    const hanldeDeleteProduct = async () => {
+        await deleteProduct(slug as string).then((res) => {
+            if ("error" in res) {
+                toast({
+                    title: "Error",
+                    description: "Failed to delete product",
+                    variant: "destructive",
+                });
+            } else {
+                toast({
+                    title: "Success",
+                    description: "Product deleted successfully",
+                    variant: "default",
+                });
+                router.push("/admin/products");
+            }
+        });
+    };
 
     const handleImageUpload = (file: File) => {
         const blobUrl = URL.createObjectURL(file);
@@ -731,42 +754,52 @@ export default function ProductDetailPage() {
                             </FormItem>
                         )}
                     />
-                    {isEditing ? (
-                        <div className="flex justify-start items-start space-x-4 w-fit">
-                            <Button
-                                type="submit"
-                                className={`${
-                                    isSaving
-                                        ? "bg-[#030391]/20 cursor-not-allowed hover:bg-[#030391]/20 active:bg-[#030391]/20"
-                                        : "bg-sub hover:bg-main/90 active:bg-main/95"
-                                } w-full relative`}>
-                                {isSaving ? (
-                                    <div className="absolute inset-0 flex items-center justify-center">
-                                        <div className="animate-spin rounded-full h-3 w-3 border-b border-gray-900" />
-                                    </div>
-                                ) : (
-                                    "Save changes"
-                                )}
-                            </Button>
-                            {!isSaving && (
+                    <div className="flex justify-start items-center space-x-2">
+                        {isEditing ? (
+                            <div className="flex justify-start items-start space-x-4 w-fit">
                                 <Button
-                                    onClick={(e) => {
-                                        e.preventDefault();
-                                        setIsEditing(false);
-                                    }}>
-                                    Cancel{" "}
+                                    type="submit"
+                                    className={`${
+                                        isSaving
+                                            ? "bg-[#030391]/20 cursor-not-allowed hover:bg-[#030391]/20 active:bg-[#030391]/20"
+                                            : "bg-sub hover:bg-main/90 active:bg-main/95"
+                                    } w-full relative`}>
+                                    {isSaving ? (
+                                        <div className="absolute inset-0 flex items-center justify-center">
+                                            <div className="animate-spin rounded-full h-3 w-3 border-b border-gray-900" />
+                                        </div>
+                                    ) : (
+                                        "Save changes"
+                                    )}
                                 </Button>
-                            )}
-                        </div>
-                    ) : (
+                                {!isSaving && (
+                                    <Button
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            setIsEditing(false);
+                                        }}>
+                                        Cancel{" "}
+                                    </Button>
+                                )}
+                            </div>
+                        ) : (
+                            <Button
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    handleEdit();
+                                }}>
+                                Edit Product
+                            </Button>
+                        )}
                         <Button
+                            className="bg-red-500 hover:bg-red-500/90"
                             onClick={(e) => {
                                 e.preventDefault();
-                                handleEdit();
+                                hanldeDeleteProduct();
                             }}>
-                            Edit Product
+                            Delete product
                         </Button>
-                    )}
+                    </div>
                 </form>
             </Form>
             <div className="flex flex-col justify-start items-start space-y-6">

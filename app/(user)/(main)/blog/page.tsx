@@ -29,82 +29,75 @@ import { Input } from "@/components/ui/input";
 import { Separator } from "@radix-ui/react-separator";
 // todo: implement pagination
 
-type BlogWithThumb = BlogTrue & {
-    thumb: {
-        imageId: string;
-        src: string;
-    };
-};
-
 const MAX_BLOGS_PER_PAGE = 3;
 export default function BlogPage() {
     const [posts, setPosts] = useState<BlogTrue[]>([]);
     const [thumbs, setThumbs] = useState<BlogImageCreate[]>([]);
-    const [postsWithThumbs, setPostsWithThumbs] = useState<BlogWithThumb[]>([]);
-    const [loading, setLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState("");
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
     const [isLoading, setIsLoading] = useState(true);
     const router = useRouter();
     useEffect(() => {
-        GetAllBlogs().then((data) => {
-            if ("error" in data) {
-                console.error(data.error);
-                return;
-            } else {
-                setPosts(data);
-            }
-        });
+        GetAllBlogs()
+            .then((data) => {
+                if ("error" in data) {
+                    console.error(data.error);
+                    return;
+                } else {
+                    setPosts(data);
+                }
+            })
+            .finally(() => setIsLoading(false));
     }, []);
 
     // after getting all the blogs, get the thumbs
-    useEffect(() => {
-        if (posts.length > 0) {
-            setTotalPages(Math.ceil(posts.length / MAX_BLOGS_PER_PAGE));
-            Promise.all(
-                posts.map(async (post) => {
-                    await getImagesFromBlog(post.blogId).then((data) => {
-                        if ("error" in data) {
-                            console.error(data.error);
-                            return;
-                        } else {
-                            const thumb = data.filter(
-                                (thumb) => thumb.isThumbnail == true
-                            );
-                            console.log("Thumbs:", thumb);
-                            setThumbs((prev) => [...prev, ...thumb]);
-                        }
-                    });
-                })
-            );
-        }
-    }, [posts]);
+    // useEffect(() => {
+    //     if (posts.length > 0) {
+    //         setTotalPages(Math.ceil(posts.length / MAX_BLOGS_PER_PAGE));
+    //         Promise.all(
+    //             posts.map(async (post) => {
+    //                 await getImagesFromBlog(post.blogId).then((data) => {
+    //                     if ("error" in data) {
+    //                         console.error(data.error);
+    //                         return;
+    //                     } else {
+    //                         const thumb = data.filter(
+    //                             (thumb) => thumb.isThumbnail == true
+    //                         );
+    //                         console.log("Thumbs:", thumb);
+    //                         setThumbs((prev) => [...prev, ...thumb]);
+    //                     }
+    //                 });
+    //             })
+    //         );
+    //     }
+    // }, [posts]);
 
-    useEffect(() => {
-        // start combining the posts with the thumbs by index
-        if (
-            posts.length > 0 &&
-            thumbs.length > 0 &&
-            posts.length === thumbs.length
-        ) {
-            const combined = posts.map((post, index) => {
-                return {
-                    ...post,
-                    thumb: thumbs[index],
-                };
-            });
-            console.log("Combined:", combined);
-            setPostsWithThumbs(combined);
-            setLoading(false);
-        }
-    }, [thumbs]);
+    // useEffect(() => {
+    //     // start combining the posts with the thumbs by index
+    //     if (
+    //         posts.length > 0 &&
+    //         thumbs.length > 0 &&
+    //         posts.length === thumbs.length
+    //     ) {
+    //         const combined = posts.map((post, index) => {
+    //             return {
+    //                 ...post,
+    //                 thumb: thumbs[index],
+    //             };
+    //         });
+    //         console.log("Combined:", combined);
+    //         setPostsWithThumbs(combined);
+    //         setLoading(false);
+    //     }
+    // }, [thumbs]);
 
-    if (loading) {
+    if (isLoading) {
         return <div>Loading...</div>;
     }
 
-    const filteredPosts = postsWithThumbs.filter((post) =>
+    const filteredPosts = posts.filter((post) =>
         (post.title.toLowerCase() + post.tags.join(" ")).includes(
             searchTerm.toLowerCase()
         )
@@ -143,7 +136,7 @@ export default function BlogPage() {
                                 }}>
                                 <div className="relative h-[300px]">
                                     <Image
-                                        src={paginatedPosts[index].thumb.src}
+                                        src={paginatedPosts[index].thumbnail}
                                         alt={paginatedPosts[index].title}
                                         fill
                                         className="object-cover"

@@ -33,7 +33,11 @@ import { convertToReact } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
 import { CheckboxGroup } from "@/components/input/CheckBoxGroup";
 import { ColorMapping } from "@/components/decoration/ColorMaping";
-import { createProduct, ProductCreate } from "@/services/ProductService";
+import {
+    createProduct,
+    ProductCreate,
+    deleteProduct,
+} from "@/services/ProductService";
 import { createProductImage } from "@/services/ImageService";
 import { productSchema } from "@/lib/validation";
 import { sizeOptions, colorOptions } from "@/lib/constants";

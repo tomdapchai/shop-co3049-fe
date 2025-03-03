@@ -32,6 +32,9 @@ export const GetOrdersByUserId = async (
                     address: order.address,
                     total: Number(order.total),
                     name: order.name,
+                    discount: order.discount
+                        ? Number(order.discount)
+                        : undefined,
                 };
             });
         }
@@ -69,6 +72,7 @@ export const getAllOrders = async (): Promise<Order[] | { error: string }> => {
                 address: order.address,
                 total: Number(order.total),
                 name: order.name,
+                discount: order.discount ? Number(order.discount) : undefined,
             };
         });
         return res;
@@ -107,6 +111,9 @@ export const getOderById = async (
             address: response.data.address,
             total: Number(response.data.total),
             name: response.data.name,
+            discount: response.data.discount
+                ? Number(response.data.discount)
+                : undefined,
         };
         return res;
     } catch (error) {

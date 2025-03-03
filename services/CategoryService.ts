@@ -2,16 +2,17 @@ import api from "@/api";
 import { category } from "@/types";
 
 export const getAllCategories = async (): Promise<
-    category[] | { error: string }
+    categoryWithId[] | { error: string }
 > => {
     try {
         const response = await api.get("api/category/routes.php");
         console.log("Backend Response:", response.data);
-        const res: category[] = response.data.data.map((category: any) => {
+        const res: categoryWithId[] = response.data.data.map((category: any) => {
             return {
                 categoryId: category.category_id,
                 name: category.name,
                 image: category.image,
+                displayOrder: category.display_order,
             };
         });
         return res;
@@ -23,15 +24,16 @@ export const getAllCategories = async (): Promise<
 
 export const getCategoryById = async (
     categoryId: string
-): Promise<category | { error: string }> => {
+): Promise<categoryWithId | { error: string }> => {
     try {
         const response = await api.get(
             `api/category/routes.php?categoryId=${categoryId}`
         );
         console.log("Backend Response:", response.data);
-        const { category_id, ...rest } = response.data.data;
+        const { category_id, display_order, ...rest } = response.data.data;
         return {
             categoryId: category_id,
+            displayOrder: display_order,
             ...rest,
         };
     } catch (error) {
@@ -82,3 +84,21 @@ export const deleteCategory = async (
         return { error: "Error deleting category" };
     }
 };
+
+export const updateCategoryOrder = async (
+    categories: { categoryId: string; displayOrder: number }[]
+): Promise<{ message: string } | { error: string }> => {
+    try {
+        const response = await api.post(
+            "api/category/routes.php?action=reorder",
+            categories
+        );
+        console.log("Backend Response:", response.data);
+        return { message: response.data.message };
+    } catch (error) {
+        console.log("Error updating order:", error);
+        return { error: "Error updating category order" };
+    }
+};
+
+export type categoryWithId = category & { displayOrder: number };

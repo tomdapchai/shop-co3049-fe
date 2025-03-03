@@ -1,7 +1,14 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Plus, Pencil, Trash2 } from "lucide-react";
+import {
+    Plus,
+    Pencil,
+    Trash2,
+    MoveUp,
+    MoveDown,
+    GripVertical,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -36,30 +43,35 @@ import {
     createCategory,
     updateCategory,
     deleteCategory,
+    updateCategoryOrder,
+    categoryWithId,
 } from "@/services/CategoryService";
+import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 
 export default function CategoryManagement() {
     const { toast } = useToast();
-    const [categories, setCategories] = useState<category[]>([]);
+    const [categories, setCategories] = useState<categoryWithId[]>([]);
 
     const [isDialogOpen, setIsDialogOpen] = useState(false);
-    const [editingCategory, setEditingCategory] = useState<category | null>(
-        null
-    );
+    const [editingCategory, setEditingCategory] =
+        useState<categoryWithId | null>(null);
 
     useEffect(() => {
-        getAllCategories().then((res) => {
-            if ("error" in res) {
-                toast({
-                    title: "Error fetching categories",
-                    description: res.error,
-                    variant: "destructive",
-                });
-                return;
-            }
-            setCategories(res);
-        });
+        fetchCategories();
     }, []);
+
+    const fetchCategories = async () => {
+        const res = await getAllCategories();
+        if ("error" in res) {
+            toast({
+                title: "Error fetching categories",
+                description: res.error,
+                variant: "destructive",
+            });
+            return;
+        }
+        setCategories(res);
+    };
 
     const handleAddCategory = async (newCategory: category) => {
         await createCategory(newCategory)
@@ -72,12 +84,12 @@ export default function CategoryManagement() {
                     });
                     return;
                 }
-                setCategories([...categories, newCategory]);
+                fetchCategories(); // Refetch to get updated display_order
             })
             .finally(() => {
                 setIsDialogOpen(false);
                 toast({
-                    title: "category added",
+                    title: "Category added",
                     description: `${newCategory.name} has been added successfully.`,
                 });
             });
@@ -97,7 +109,7 @@ export default function CategoryManagement() {
                 setCategories(
                     categories.map((cat) =>
                         cat.categoryId === updatedCategory.categoryId
-                            ? updatedCategory
+                            ? { ...cat, ...updatedCategory }
                             : cat
                     )
                 );
@@ -106,7 +118,7 @@ export default function CategoryManagement() {
                 setIsDialogOpen(false);
                 setEditingCategory(null);
                 toast({
-                    title: "category updated",
+                    title: "Category updated",
                     description: `${updatedCategory.name} has been updated successfully.`,
                 });
             });
@@ -129,16 +141,136 @@ export default function CategoryManagement() {
             })
             .finally(() => {
                 toast({
-                    title: "category deleted",
+                    title: "Category deleted",
                     description: "The category has been deleted successfully.",
                     variant: "destructive",
                 });
             });
     };
 
-    const openEditDialog = (category: category) => {
+    const openEditDialog = (category: categoryWithId) => {
         setEditingCategory(category);
         setIsDialogOpen(true);
+    };
+
+    const handleMoveUp = async (index: number) => {
+        if (index === 0) return;
+
+        const newCategories = [...categories];
+        const movedCategory = {
+            ...newCategories[index],
+            displayOrder: newCategories[index - 1].displayOrder,
+        };
+        const previousCategory = {
+            ...newCategories[index - 1],
+            displayOrder: newCategories[index].displayOrder,
+        };
+
+        newCategories[index] = movedCategory;
+        newCategories[index - 1] = previousCategory;
+
+        // Sort by displayOrder to update visual order
+        newCategories.sort((a, b) => a.displayOrder - b.displayOrder);
+
+        setCategories(newCategories);
+
+        // Update order in backend
+        const orderData = [
+            {
+                categoryId: movedCategory.categoryId,
+                displayOrder: movedCategory.displayOrder,
+            },
+            {
+                categoryId: previousCategory.categoryId,
+                displayOrder: previousCategory.displayOrder,
+            },
+        ];
+
+        const result = await updateCategoryOrder(orderData);
+        if ("error" in result) {
+            toast({
+                title: "Error updating order",
+                description: result.error,
+                variant: "destructive",
+            });
+            fetchCategories(); // Reset to original order
+        }
+    };
+
+    const handleMoveDown = async (index: number) => {
+        if (index === categories.length - 1) return;
+
+        const newCategories = [...categories];
+        const movedCategory = {
+            ...newCategories[index],
+            displayOrder: newCategories[index + 1].displayOrder,
+        };
+        const nextCategory = {
+            ...newCategories[index + 1],
+            displayOrder: newCategories[index].displayOrder,
+        };
+
+        newCategories[index] = movedCategory;
+        newCategories[index + 1] = nextCategory;
+
+        // Sort by displayOrder to update visual order
+        newCategories.sort((a, b) => a.displayOrder - b.displayOrder);
+
+        setCategories(newCategories);
+
+        // Update order in backend
+        const orderData = [
+            {
+                categoryId: movedCategory.categoryId,
+                displayOrder: movedCategory.displayOrder,
+            },
+            {
+                categoryId: nextCategory.categoryId,
+                displayOrder: nextCategory.displayOrder,
+            },
+        ];
+
+        const result = await updateCategoryOrder(orderData);
+        if ("error" in result) {
+            toast({
+                title: "Error updating order",
+                description: result.error,
+                variant: "destructive",
+            });
+            fetchCategories(); // Reset to original order
+        }
+    };
+
+    const onDragEnd = async (result: any) => {
+        if (!result.destination) return;
+
+        const items = Array.from(categories);
+        const [reorderedItem] = items.splice(result.source.index, 1);
+        items.splice(result.destination.index, 0, reorderedItem);
+
+        // Update displayOrder values
+        const updatedItems = items.map((item, index) => ({
+            ...item,
+            displayOrder: index + 1,
+        }));
+
+        setCategories(updatedItems);
+
+        // Send the updated order to the server
+        const orderData = updatedItems.map((item) => ({
+            categoryId: item.categoryId,
+            displayOrder: item.displayOrder,
+        }));
+
+        const result2 = await updateCategoryOrder(orderData);
+        if ("error" in result2) {
+            toast({
+                title: "Error updating order",
+                description: result2.error,
+                variant: "destructive",
+            });
+            fetchCategories(); // Reset to original order
+        }
     };
 
     return (
@@ -151,15 +283,15 @@ export default function CategoryManagement() {
                             <Button
                                 onClick={() => setEditingCategory(null)}
                                 className="flex items-center gap-1">
-                                <Plus className="h-4 w-4" /> Add category
+                                <Plus className="h-4 w-4" /> Add Category
                             </Button>
                         </DialogTrigger>
                         <DialogContent className="sm:max-w-[500px]">
                             <DialogHeader>
                                 <DialogTitle>
                                     {editingCategory
-                                        ? "Edit category"
-                                        : "Add New category"}
+                                        ? "Edit Category"
+                                        : "Add New Category"}
                                 </DialogTitle>
                             </DialogHeader>
                             <CategoryForm
@@ -174,64 +306,148 @@ export default function CategoryManagement() {
                     </Dialog>
                 </CardHeader>
                 <CardContent className="overflow-x-auto no-scrollbar">
-                    <Table className="no-scrollbar">
-                        <TableHeader>
-                            <TableRow>
-                                <TableHead>Image</TableHead>
-                                <TableHead>category ID</TableHead>
-                                <TableHead>Name</TableHead>
-                                <TableHead className="text-right">
-                                    Actions
-                                </TableHead>
-                            </TableRow>
-                        </TableHeader>
-                        <TableBody className="no-scrollbar">
-                            {categories.map((category) => (
-                                <TableRow key={category.categoryId}>
-                                    <TableCell>
-                                        <img
-                                            src={
-                                                category.image ||
-                                                "/placeholder.svg"
-                                            }
-                                            alt={category.name}
-                                            className="h-10 w-10 rounded-md object-cover"
-                                        />
-                                    </TableCell>
-                                    <TableCell>{category.categoryId}</TableCell>
-                                    <TableCell>{category.name}</TableCell>
-                                    <TableCell className="text-right">
-                                        <div className="flex justify-end gap-2">
-                                            <Button
-                                                variant="outline"
-                                                size="icon"
-                                                onClick={() =>
-                                                    openEditDialog(category)
-                                                }>
-                                                <Pencil className="h-4 w-4" />
-                                            </Button>
-                                            <Button
-                                                variant="destructive"
-                                                size="icon"
-                                                onClick={() =>
-                                                    handleDeleteCategory(
-                                                        category.categoryId
-                                                    )
-                                                }>
-                                                <Trash2 className="h-4 w-4" />
-                                            </Button>
-                                        </div>
-                                    </TableCell>
-                                </TableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
+                    <p className="text-sm text-gray-500 mb-4">
+                        Drag and drop categories to reorder them, or use the
+                        up/down buttons. The order here will be reflected in the
+                        site menu.
+                    </p>
+
+                    <DragDropContext onDragEnd={onDragEnd}>
+                        <Droppable droppableId="categories">
+                            {(provided) => (
+                                <Table className="no-scrollbar">
+                                    <TableHeader>
+                                        <TableRow>
+                                            <TableHead
+                                                style={{
+                                                    width: "50px",
+                                                }}></TableHead>
+                                            <TableHead>Image</TableHead>
+                                            <TableHead>Category ID</TableHead>
+                                            <TableHead>Name</TableHead>
+                                            <TableHead>Order</TableHead>
+                                            <TableHead className="text-right">
+                                                Actions
+                                            </TableHead>
+                                        </TableRow>
+                                    </TableHeader>
+                                    <TableBody
+                                        {...provided.droppableProps}
+                                        ref={provided.innerRef}
+                                        className="no-scrollbar">
+                                        {categories.map((category, index) => (
+                                            <Draggable
+                                                key={category.categoryId}
+                                                draggableId={
+                                                    category.categoryId
+                                                }
+                                                index={index}>
+                                                {(provided) => (
+                                                    <TableRow
+                                                        ref={provided.innerRef}
+                                                        {...provided.draggableProps}>
+                                                        <TableCell>
+                                                            <div
+                                                                {...provided.dragHandleProps}
+                                                                className="cursor-move">
+                                                                <GripVertical className="h-4 w-4" />
+                                                            </div>
+                                                        </TableCell>
+                                                        <TableCell>
+                                                            <img
+                                                                src={
+                                                                    category.image ||
+                                                                    "/placeholder.svg"
+                                                                }
+                                                                alt={
+                                                                    category.name
+                                                                }
+                                                                className="h-10 w-10 rounded-md object-cover"
+                                                            />
+                                                        </TableCell>
+                                                        <TableCell>
+                                                            {
+                                                                category.categoryId
+                                                            }
+                                                        </TableCell>
+                                                        <TableCell>
+                                                            {category.name}
+                                                        </TableCell>
+                                                        <TableCell>
+                                                            {
+                                                                category.displayOrder
+                                                            }
+                                                        </TableCell>
+                                                        <TableCell className="text-right">
+                                                            <div className="flex justify-end gap-2">
+                                                                <Button
+                                                                    variant="outline"
+                                                                    size="icon"
+                                                                    onClick={() =>
+                                                                        handleMoveUp(
+                                                                            index
+                                                                        )
+                                                                    }
+                                                                    disabled={
+                                                                        index ===
+                                                                        0
+                                                                    }>
+                                                                    <MoveUp className="h-4 w-4" />
+                                                                </Button>
+                                                                <Button
+                                                                    variant="outline"
+                                                                    size="icon"
+                                                                    onClick={() =>
+                                                                        handleMoveDown(
+                                                                            index
+                                                                        )
+                                                                    }
+                                                                    disabled={
+                                                                        index ===
+                                                                        categories.length -
+                                                                            1
+                                                                    }>
+                                                                    <MoveDown className="h-4 w-4" />
+                                                                </Button>
+                                                                <Button
+                                                                    variant="outline"
+                                                                    size="icon"
+                                                                    onClick={() =>
+                                                                        openEditDialog(
+                                                                            category
+                                                                        )
+                                                                    }>
+                                                                    <Pencil className="h-4 w-4" />
+                                                                </Button>
+                                                                <Button
+                                                                    variant="destructive"
+                                                                    size="icon"
+                                                                    onClick={() =>
+                                                                        handleDeleteCategory(
+                                                                            category.categoryId
+                                                                        )
+                                                                    }>
+                                                                    <Trash2 className="h-4 w-4" />
+                                                                </Button>
+                                                            </div>
+                                                        </TableCell>
+                                                    </TableRow>
+                                                )}
+                                            </Draggable>
+                                        ))}
+                                        {provided.placeholder}
+                                    </TableBody>
+                                </Table>
+                            )}
+                        </Droppable>
+                    </DragDropContext>
                 </CardContent>
             </Card>
         </div>
     );
 }
 
+// ...existing CategoryForm component remains the same...
 interface CategoryFormProps {
     onSubmit: (data: category) => void;
     initialData: category | null;

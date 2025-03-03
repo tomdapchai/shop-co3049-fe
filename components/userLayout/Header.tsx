@@ -86,11 +86,10 @@ const Header = () => {
                     <Image
                         src={siteInfo?.logo || "/images/logo.png"}
                         alt="logo"
-                        width={50}
+                        width={100}
                         height={50}
                     />
                 </Link>
-                <h1 className="font-bold text-xl">Furnora</h1>
             </div>
 
             {isLargeScreen ? (

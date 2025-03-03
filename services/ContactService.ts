@@ -1,13 +1,15 @@
 import api from "@/api";
 import { Contact } from "@/types";
 
+export type ContactReceive = Contact & { sendAt: string };
+
 export const getAllContacts = async (): Promise<
-    Contact[] | { error: string }
+    ContactReceive[] | { error: string }
 > => {
     try {
         const response = await api.get("api/contact/routes.php");
         console.log("Backend Response:", response.data);
-        let res: Contact[] = [];
+        let res: ContactReceive[] = [];
         if (response.data.data.length > 0) {
             res = response.data.data.map((contact: any) => {
                 return {
@@ -17,6 +19,7 @@ export const getAllContacts = async (): Promise<
                     phoneNumber: contact.phone_number,
                     subject: contact.subject,
                     message: contact.message,
+                    sendAt: contact.sendAt,
                 };
             });
         }
@@ -29,7 +32,7 @@ export const getAllContacts = async (): Promise<
 
 export const getContactById = async (
     contactId: string
-): Promise<Contact | { error: string }> => {
+): Promise<ContactReceive | { error: string }> => {
     try {
         const response = await api.get(
             `api/contact/routes.php?contactId=${contactId}`
@@ -43,6 +46,7 @@ export const getContactById = async (
             phoneNumber: contact.phone_number,
             subject: contact.subject,
             message: contact.message,
+            sendAt: contact.sendAt,
         };
     } catch (error) {
         console.log("Error fetching contact:", error);

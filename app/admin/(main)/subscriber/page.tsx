@@ -24,15 +24,21 @@ import { subcriber } from "@/types";
 import {
     getAllSubscribers,
     deleteSubscriber,
+    subcribeReceive,
 } from "@/services/SubscribeService";
+import { ArrowUpDown } from "lucide-react";
 
 const SUBSCRIBERS_PER_PAGE = 20;
 
+type SortKey = "sendAt" | "id";
+
 const page = () => {
-    const [subcribers, setSubcribers] = useState<subcriber[]>([]);
+    const [subcribers, setSubcribers] = useState<subcribeReceive[]>([]);
     const [searchQuery, setSearchQuery] = useState("");
     const [currentPage, setCurrentPage] = useState(1);
     const [isLoading, setIsLoading] = useState(true);
+    const [sortKey, setSortKey] = useState<SortKey>("sendAt");
+    const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
 
     useEffect(() => {
         getAllSubscribers().then((data) => {
@@ -50,17 +56,42 @@ const page = () => {
         return <div>Loading...</div>;
     }
 
+    const handleSort = (key: SortKey) => {
+        setSortKey(key);
+        setSortOrder((prev) => (prev === "asc" ? "desc" : "asc"));
+    };
+
+    const SortButton = ({ column }: { column: SortKey }) => (
+        <Button
+            variant="ghost"
+            onClick={() => handleSort(column)}
+            className="h-8 w-8 p-0">
+            <span className="sr-only">Sort by {column}</span>
+            <ArrowUpDown className="h-4 w-4" />
+        </Button>
+    );
+
+    const sortSubcribers = (subcribersToSort: typeof subcribers) => {
+        return [...subcribersToSort].sort((a, b) => {
+            if (a[sortKey] < b[sortKey]) return sortOrder === "asc" ? -1 : 1;
+            if (a[sortKey] > b[sortKey]) return sortOrder === "asc" ? 1 : -1;
+            return 0;
+        });
+    };
+
     const filteredSubcribers = subcribers.filter((subcriber) =>
         subcriber.email.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
-    const paginatedContacts = filteredSubcribers.slice(
+    const sortedSubcribers = sortSubcribers(filteredSubcribers);
+
+    const paginatedContacts = sortedSubcribers.slice(
         (currentPage - 1) * SUBSCRIBERS_PER_PAGE,
         currentPage * SUBSCRIBERS_PER_PAGE
     );
 
     const totalPages = Math.ceil(
-        filteredSubcribers.length / SUBSCRIBERS_PER_PAGE
+        sortedSubcribers.length / SUBSCRIBERS_PER_PAGE
     );
 
     const handleDelete = async (id: string) => {
@@ -88,8 +119,13 @@ const page = () => {
                 <Table>
                     <TableHeader>
                         <TableRow>
-                            <TableHead>ID</TableHead>
+                            <TableHead>
+                                ID <SortButton column="id" />
+                            </TableHead>
                             <TableHead>Email</TableHead>
+                            <TableHead>
+                                Timestamp <SortButton column="sendAt" />
+                            </TableHead>
                             <TableHead>Actions</TableHead>
                         </TableRow>
                     </TableHeader>
@@ -99,7 +135,13 @@ const page = () => {
                                 <TableCell>{subcriber.id}</TableCell>
                                 <TableCell>{subcriber.email}</TableCell>
                                 <TableCell>
+                                    {new Date(
+                                        subcriber.sendAt
+                                    ).toLocaleString()}
+                                </TableCell>
+                                <TableCell>
                                     <Button
+                                        className="bg-red-500 hover:bg-red-500/90"
                                         onClick={() =>
                                             handleDelete(subcriber.id)
                                         }>

@@ -36,6 +36,7 @@ import { CreateBlog, DeleteBlog } from "@/services/BlogService";
 import { createBlogImage } from "@/services/ImageService";
 import { Blog } from "@/types";
 import { blogSchema } from "@/lib/validation";
+import { useRouter } from "next/navigation";
 export type UploadedImage = {
     alt: string;
     src: string;
@@ -56,8 +57,10 @@ export default function BlogCreator() {
             content: "",
             overview: "",
             tags: [],
+            thumbnail: "/image/banner.jpg",
         },
     });
+    const router = useRouter();
 
     const handleImageUpload = (file: File) => {
         const blobURL = URL.createObjectURL(file);
@@ -224,9 +227,11 @@ export default function BlogCreator() {
             await CreateBlog({
                 blogId: values.blogId,
                 title: values.title,
+                overview: values.overview,
                 content: convertedContent,
                 tags: values.tags,
                 contentOriginal: values.content,
+                thumbnail: thumbnail,
             })
                 .then((res) => {
                     if ("error" in res) {
@@ -302,6 +307,7 @@ export default function BlogCreator() {
                 })
                 .finally(() => {
                     setIsSubmitting(false);
+                    router.push("/admin/blogs");
                 });
         } catch (error) {
             console.error("Error in onSubmit:", error);

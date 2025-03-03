@@ -27,7 +27,7 @@ const page = () => {
     }
 
     return (
-        <div className="w-full flex flex-col space-y-10 justify-center items-center">
+        <div className="w-full flex flex-col space-y-10 justify-center items-center h-screen">
             <h1 className="font-bold text-2xl text-sub">
                 Order created successfully
             </h1>

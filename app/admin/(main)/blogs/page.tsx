@@ -31,40 +31,42 @@ export default function BlogManagement() {
     const allTags = Array.from(new Set(blogs.flatMap((blog) => blog.tags)));
 
     useEffect(() => {
-        GetAllBlogs().then((data) => {
-            if ("error" in data) {
-                console.log(data.error);
-            } else {
-                console.log("Blogs:", data);
-                setBlogs(data);
-            }
-        });
+        GetAllBlogs()
+            .then((data) => {
+                if ("error" in data) {
+                    console.log(data.error);
+                } else {
+                    console.log("Blogs:", data);
+                    setBlogs(data);
+                }
+            })
+            .finally(() => setIsLoading(false));
     }, []);
 
-    useEffect(() => {
-        if (blogs.length > 0) {
-            Promise.all(
-                blogs.map(async (post) => {
-                    await getImagesFromBlog(post.blogId).then((data) => {
-                        if ("error" in data) {
-                            console.error(data.error);
-                            return;
-                        } else {
-                            const thumb = data.filter(
-                                (thumb) => thumb.isThumbnail == true
-                            );
+    // useEffect(() => {
+    //     if (blogs.length > 0) {
+    //         Promise.all(
+    //             blogs.map(async (post) => {
+    //                 await getImagesFromBlog(post.blogId).then((data) => {
+    //                     if ("error" in data) {
+    //                         console.error(data.error);
+    //                         return;
+    //                     } else {
+    //                         const thumb = data.filter(
+    //                             (thumb) => thumb.isThumbnail == true
+    //                         );
 
-                            setThumbs((prev) => [...prev, ...thumb]);
-                        }
-                    });
-                })
-            ).then(() => setIsLoading(false));
-        }
-    }, [blogs]);
+    //                         setThumbs((prev) => [...prev, ...thumb]);
+    //                     }
+    //                 });
+    //             })
+    //         ).then(() => setIsLoading(false));
+    //     }
+    // }, [blogs]);
 
-    useEffect(() => {
-        console.log(thumbs);
-    }, [thumbs]);
+    // useEffect(() => {
+    //     console.log(thumbs);
+    // }, [thumbs]);
 
     if (isLoading) {
         return <div>Loading...</div>;
@@ -142,7 +144,7 @@ export default function BlogManagement() {
                     <BlogCard
                         key={blog.blogId}
                         blog={blog}
-                        thumb={thumbs[index]}
+                        thumb={blog.thumbnail}
                     />
                 ))}
             </div>

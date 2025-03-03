@@ -74,6 +74,7 @@ export const blogSchema = z.object({
     content: z.string().min(1, "Content is required"),
     overview: z.string().optional(),
     tags: z.array(z.string()),
+    thumbnail: z.string().min(1, "Thumbnail is required"),
 });
 
 export const productSchema = z.object({
@@ -150,4 +151,9 @@ export const advertisementSchema = z.object({
 export const navLinkSchema = z.object({
     title: z.string().min(1, "Title is required"),
     url: z.string().min(1, "URL is required"),
+});
+
+export const couponSchema = z.object({
+    code: z.string().min(1, "Code is required"),
+    discount: z.number().min(0, "Discount must be a positive number"),
 });

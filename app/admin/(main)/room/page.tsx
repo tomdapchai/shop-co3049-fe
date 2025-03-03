@@ -1,7 +1,14 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Plus, Pencil, Trash2 } from "lucide-react";
+import {
+    Plus,
+    Pencil,
+    Trash2,
+    MoveUp,
+    MoveDown,
+    GripVertical,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -36,28 +43,34 @@ import {
     createRoom,
     updateRoom,
     deleteRoom,
+    updateRoomOrder,
+    roomWithId,
 } from "@/services/RoomService";
+import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 
 export default function RoomManagement() {
     const { toast } = useToast();
-    const [rooms, setRooms] = useState<room[]>([]);
+    const [rooms, setRooms] = useState<roomWithId[]>([]);
 
     const [isDialogOpen, setIsDialogOpen] = useState(false);
-    const [editingRoom, setEditingRoom] = useState<room | null>(null);
+    const [editingRoom, setEditingRoom] = useState<roomWithId | null>(null);
 
     useEffect(() => {
-        getAllRooms().then((res) => {
-            if ("error" in res) {
-                toast({
-                    title: "Error fetching rooms",
-                    description: res.error,
-                    variant: "destructive",
-                });
-                return;
-            }
-            setRooms(res);
-        });
+        fetchRooms();
     }, []);
+
+    const fetchRooms = async () => {
+        const res = await getAllRooms();
+        if ("error" in res) {
+            toast({
+                title: "Error fetching rooms",
+                description: res.error,
+                variant: "destructive",
+            });
+            return;
+        }
+        setRooms(res);
+    };
 
     const handleAddRoom = async (newRoom: room) => {
         await createRoom(newRoom)
@@ -70,19 +83,19 @@ export default function RoomManagement() {
                     });
                     return;
                 }
-                setRooms([...rooms, newRoom]);
+                fetchRooms(); // Refetch to get updated display_order
             })
             .finally(() => {
                 setIsDialogOpen(false);
                 toast({
-                    title: "room added",
+                    title: "Room added",
                     description: `${newRoom.name} has been added successfully.`,
                 });
             });
     };
 
-    const handleEditRoom = async (room: room) => {
-        await updateRoom(room)
+    const handleEditRoom = async (updatedRoom: room) => {
+        await updateRoom(updatedRoom)
             .then((res) => {
                 if ("error" in res) {
                     toast({
@@ -93,8 +106,10 @@ export default function RoomManagement() {
                     return;
                 }
                 setRooms(
-                    rooms.map((cat) =>
-                        cat.roomId === room.roomId ? room : cat
+                    rooms.map((room) =>
+                        room.roomId === updatedRoom.roomId
+                            ? { ...room, ...updatedRoom }
+                            : room
                     )
                 );
             })
@@ -103,7 +118,7 @@ export default function RoomManagement() {
                 setEditingRoom(null);
                 toast({
                     title: "Room updated",
-                    description: `${room.name} has been updated successfully.`,
+                    description: `${updatedRoom.name} has been updated successfully.`,
                 });
             });
     };
@@ -119,20 +134,140 @@ export default function RoomManagement() {
                     });
                     return;
                 }
-                setRooms(rooms.filter((cat) => cat.roomId !== roomId));
+                setRooms(rooms.filter((room) => room.roomId !== roomId));
             })
             .finally(() => {
                 toast({
-                    title: "room deleted",
+                    title: "Room deleted",
                     description: "The room has been deleted successfully.",
                     variant: "destructive",
                 });
             });
     };
 
-    const openEditDialog = (room: room) => {
+    const openEditDialog = (room: roomWithId) => {
         setEditingRoom(room);
         setIsDialogOpen(true);
+    };
+
+    const handleMoveUp = async (index: number) => {
+        if (index === 0) return;
+
+        const newRooms = [...rooms];
+        const movedRoom = {
+            ...newRooms[index],
+            displayOrder: newRooms[index - 1].displayOrder,
+        };
+        const previousRoom = {
+            ...newRooms[index - 1],
+            displayOrder: newRooms[index].displayOrder,
+        };
+
+        newRooms[index] = movedRoom;
+        newRooms[index - 1] = previousRoom;
+
+        // Sort by displayOrder to update visual order
+        newRooms.sort((a, b) => a.displayOrder - b.displayOrder);
+
+        setRooms(newRooms);
+
+        // Update order in backend
+        const orderData = [
+            {
+                roomId: movedRoom.roomId,
+                displayOrder: movedRoom.displayOrder,
+            },
+            {
+                roomId: previousRoom.roomId,
+                displayOrder: previousRoom.displayOrder,
+            },
+        ];
+
+        const result = await updateRoomOrder(orderData);
+        if ("error" in result) {
+            toast({
+                title: "Error updating order",
+                description: result.error,
+                variant: "destructive",
+            });
+            fetchRooms(); // Reset to original order
+        }
+    };
+
+    const handleMoveDown = async (index: number) => {
+        if (index === rooms.length - 1) return;
+
+        const newRooms = [...rooms];
+        const movedRoom = {
+            ...newRooms[index],
+            displayOrder: newRooms[index + 1].displayOrder,
+        };
+        const nextRoom = {
+            ...newRooms[index + 1],
+            displayOrder: newRooms[index].displayOrder,
+        };
+
+        newRooms[index] = movedRoom;
+        newRooms[index + 1] = nextRoom;
+
+        // Sort by displayOrder to update visual order
+        newRooms.sort((a, b) => a.displayOrder - b.displayOrder);
+
+        setRooms(newRooms);
+
+        // Update order in backend
+        const orderData = [
+            {
+                roomId: movedRoom.roomId,
+                displayOrder: movedRoom.displayOrder,
+            },
+            {
+                roomId: nextRoom.roomId,
+                displayOrder: nextRoom.displayOrder,
+            },
+        ];
+
+        const result = await updateRoomOrder(orderData);
+        if ("error" in result) {
+            toast({
+                title: "Error updating order",
+                description: result.error,
+                variant: "destructive",
+            });
+            fetchRooms(); // Reset to original order
+        }
+    };
+
+    const onDragEnd = async (result: any) => {
+        if (!result.destination) return;
+
+        const items = Array.from(rooms);
+        const [reorderedItem] = items.splice(result.source.index, 1);
+        items.splice(result.destination.index, 0, reorderedItem);
+
+        // Update displayOrder values
+        const updatedItems = items.map((item, index) => ({
+            ...item,
+            displayOrder: index + 1,
+        }));
+
+        setRooms(updatedItems);
+
+        // Send the updated order to the server
+        const orderData = updatedItems.map((item) => ({
+            roomId: item.roomId,
+            displayOrder: item.displayOrder,
+        }));
+
+        const result2 = await updateRoomOrder(orderData);
+        if ("error" in result2) {
+            toast({
+                title: "Error updating order",
+                description: result2.error,
+                variant: "destructive",
+            });
+            fetchRooms(); // Reset to original order
+        }
     };
 
     return (
@@ -145,13 +280,13 @@ export default function RoomManagement() {
                             <Button
                                 onClick={() => setEditingRoom(null)}
                                 className="flex items-center gap-1">
-                                <Plus className="h-4 w-4" /> Add room
+                                <Plus className="h-4 w-4" /> Add Room
                             </Button>
                         </DialogTrigger>
                         <DialogContent className="sm:max-w-[500px]">
                             <DialogHeader>
                                 <DialogTitle>
-                                    {editingRoom ? "Edit room" : "Add New room"}
+                                    {editingRoom ? "Edit Room" : "Add New Room"}
                                 </DialogTitle>
                             </DialogHeader>
                             <RoomForm
@@ -164,57 +299,133 @@ export default function RoomManagement() {
                     </Dialog>
                 </CardHeader>
                 <CardContent className="overflow-x-auto no-scrollbar">
-                    <Table className="no-scrollbar">
-                        <TableHeader>
-                            <TableRow>
-                                <TableHead>Image</TableHead>
-                                <TableHead>room ID</TableHead>
-                                <TableHead>Name</TableHead>
-                                <TableHead className="text-right">
-                                    Actions
-                                </TableHead>
-                            </TableRow>
-                        </TableHeader>
-                        <TableBody className="no-scrollbar">
-                            {rooms.map((room) => (
-                                <TableRow key={room.roomId}>
-                                    <TableCell>
-                                        <img
-                                            src={
-                                                room.image || "/placeholder.svg"
-                                            }
-                                            alt={room.name}
-                                            className="h-10 w-10 rounded-md object-cover"
-                                        />
-                                    </TableCell>
-                                    <TableCell>{room.roomId}</TableCell>
-                                    <TableCell>{room.name}</TableCell>
-                                    <TableCell className="text-right">
-                                        <div className="flex justify-end gap-2">
-                                            <Button
-                                                variant="outline"
-                                                size="icon"
-                                                onClick={() =>
-                                                    openEditDialog(room)
-                                                }>
-                                                <Pencil className="h-4 w-4" />
-                                            </Button>
-                                            <Button
-                                                variant="destructive"
-                                                size="icon"
-                                                onClick={() =>
-                                                    handleDeleteRoom(
-                                                        room.roomId
-                                                    )
-                                                }>
-                                                <Trash2 className="h-4 w-4" />
-                                            </Button>
-                                        </div>
-                                    </TableCell>
-                                </TableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
+                    <p className="text-sm text-gray-500 mb-4">
+                        Drag and drop rooms to reorder them, or use the up/down
+                        buttons. The order here will be reflected in the site
+                        menu.
+                    </p>
+
+                    <DragDropContext onDragEnd={onDragEnd}>
+                        <Droppable droppableId="rooms">
+                            {(provided) => (
+                                <Table className="no-scrollbar">
+                                    <TableHeader>
+                                        <TableRow>
+                                            <TableHead
+                                                style={{
+                                                    width: "50px",
+                                                }}></TableHead>
+                                            <TableHead>Image</TableHead>
+                                            <TableHead>Room ID</TableHead>
+                                            <TableHead>Name</TableHead>
+                                            <TableHead>Order</TableHead>
+                                            <TableHead className="text-right">
+                                                Actions
+                                            </TableHead>
+                                        </TableRow>
+                                    </TableHeader>
+                                    <TableBody
+                                        {...provided.droppableProps}
+                                        ref={provided.innerRef}
+                                        className="no-scrollbar">
+                                        {rooms.map((room, index) => (
+                                            <Draggable
+                                                key={room.roomId}
+                                                draggableId={room.roomId}
+                                                index={index}>
+                                                {(provided) => (
+                                                    <TableRow
+                                                        ref={provided.innerRef}
+                                                        {...provided.draggableProps}>
+                                                        <TableCell>
+                                                            <div
+                                                                {...provided.dragHandleProps}
+                                                                className="cursor-move">
+                                                                <GripVertical className="h-4 w-4" />
+                                                            </div>
+                                                        </TableCell>
+                                                        <TableCell>
+                                                            <img
+                                                                src={
+                                                                    room.image ||
+                                                                    "/placeholder.svg"
+                                                                }
+                                                                alt={room.name}
+                                                                className="h-10 w-10 rounded-md object-cover"
+                                                            />
+                                                        </TableCell>
+                                                        <TableCell>
+                                                            {room.roomId}
+                                                        </TableCell>
+                                                        <TableCell>
+                                                            {room.name}
+                                                        </TableCell>
+                                                        <TableCell>
+                                                            {room.displayOrder}
+                                                        </TableCell>
+                                                        <TableCell className="text-right">
+                                                            <div className="flex justify-end gap-2">
+                                                                <Button
+                                                                    variant="outline"
+                                                                    size="icon"
+                                                                    onClick={() =>
+                                                                        handleMoveUp(
+                                                                            index
+                                                                        )
+                                                                    }
+                                                                    disabled={
+                                                                        index ===
+                                                                        0
+                                                                    }>
+                                                                    <MoveUp className="h-4 w-4" />
+                                                                </Button>
+                                                                <Button
+                                                                    variant="outline"
+                                                                    size="icon"
+                                                                    onClick={() =>
+                                                                        handleMoveDown(
+                                                                            index
+                                                                        )
+                                                                    }
+                                                                    disabled={
+                                                                        index ===
+                                                                        rooms.length -
+                                                                            1
+                                                                    }>
+                                                                    <MoveDown className="h-4 w-4" />
+                                                                </Button>
+                                                                <Button
+                                                                    variant="outline"
+                                                                    size="icon"
+                                                                    onClick={() =>
+                                                                        openEditDialog(
+                                                                            room
+                                                                        )
+                                                                    }>
+                                                                    <Pencil className="h-4 w-4" />
+                                                                </Button>
+                                                                <Button
+                                                                    variant="destructive"
+                                                                    size="icon"
+                                                                    onClick={() =>
+                                                                        handleDeleteRoom(
+                                                                            room.roomId
+                                                                        )
+                                                                    }>
+                                                                    <Trash2 className="h-4 w-4" />
+                                                                </Button>
+                                                            </div>
+                                                        </TableCell>
+                                                    </TableRow>
+                                                )}
+                                            </Draggable>
+                                        ))}
+                                        {provided.placeholder}
+                                    </TableBody>
+                                </Table>
+                            )}
+                        </Droppable>
+                    </DragDropContext>
                 </CardContent>
             </Card>
         </div>

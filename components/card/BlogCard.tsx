@@ -12,13 +12,7 @@ import parse from "html-react-parser";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { Button } from "../ui/button";
-export function BlogCard({
-    blog,
-    thumb,
-}: {
-    blog: BlogTrue;
-    thumb: BlogImageCreate;
-}) {
+export function BlogCard({ blog, thumb }: { blog: BlogTrue; thumb: string }) {
     const router = useRouter();
     return (
         <Card className="w-full">
@@ -28,8 +22,8 @@ export function BlogCard({
             <CardContent className="p-4 pt-0 h-[400px] line-clamp-3 mb-6">
                 {/* <div className="aspect-video w-full bg-muted mb-2" /> */}
                 <Image
-                    src={thumb.src}
-                    alt={thumb.imageId}
+                    src={thumb}
+                    alt={thumb.slice(10, 20)}
                     width={400}
                     height={400}
                 />
