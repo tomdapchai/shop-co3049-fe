@@ -64,7 +64,7 @@ export default function ChatRoom({ messages, setMessages }: ChatRoomProps) {
             console.error(err);
             setMessages((prev) => [
                 ...prev,
-                { role: "bot", message: "Sorry, an error occurred." },
+                { role: "bot", message: "Xin lỗi, đã có lỗi xảy ra." },
             ]);
         } finally {
             setIsLoading(false);
@@ -86,7 +86,7 @@ export default function ChatRoom({ messages, setMessages }: ChatRoomProps) {
                                 />
                             </div>
                             <Label className="font-medium text-base">
-                                Furnora Assistant
+                                Trợ lý Furnora
                             </Label>
                         </div>
                         <Button
@@ -118,13 +118,15 @@ export default function ChatRoom({ messages, setMessages }: ChatRoomProps) {
                                             </div>
                                             <div className="space-y-2">
                                                 <p>
-                                                    Hello! I'm your Furnora
-                                                    Assistant. I'm here to help
-                                                    with any questions about
-                                                    furniture.
+                                                    Xin chào! Tôi là trợ lý
+                                                    Furnora. Tôi ở đây để giúp
+                                                    bạn trả lời các câu hỏi về
+                                                    nội thất cũng như về
+                                                    Furnora.
                                                 </p>
                                                 <p>
-                                                    How can I assist you today?
+                                                    Tôi có thể giúp gì cho bạn
+                                                    hôm nay?
                                                 </p>
                                             </div>
                                         </div>
