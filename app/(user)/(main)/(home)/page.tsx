@@ -18,7 +18,6 @@ import ProductReviewCarousel from "@/components/decoration/FeedbackCarousel";
 import { Separator } from "@radix-ui/react-separator";
 import ServiceFeatures from "@/components/userLayout/ServiceFeatures";
 
-// test
 const page = () => {
     const { products, advertisement, siteInfo, isAdShown, extensions } =
         useProduct();
