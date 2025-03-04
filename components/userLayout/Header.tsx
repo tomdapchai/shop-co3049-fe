@@ -243,12 +243,12 @@ const Header = () => {
                             <div className="flex justify-start items-center space-x-4">
                                 <Link href={"/sign-in"}>
                                     <Button className="bg-sub hover:bg-[#b88e2f]/90 px-4 py-2 text-main">
-                                        Sign In
+                                        Đăng nhập
                                     </Button>
                                 </Link>
                                 <Link href={"/sign-up"}>
                                     <Button className="bg-main hover:bg-[#fff3e3]/90 px-4 py-2 text-sub">
-                                        Sign Up
+                                        Đăng ký
                                     </Button>
                                 </Link>
                             </div>

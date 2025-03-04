@@ -108,10 +108,10 @@ const SignIn = ({ type }: { type: string }) => {
         <Card className="w-[400px] h-fit">
             <CardHeader>
                 <CardTitle className="text-sub">
-                    {type == "admin" ? "Admin " : ""}Sign In
+                    {type == "admin" ? "Admin " : ""}Đăng nhập
                 </CardTitle>
                 <CardDescription>
-                    Provide login credentials to sign you in
+                    Hãy điền thông tin đăng nhập
                 </CardDescription>
             </CardHeader>
             <CardContent>
@@ -125,7 +125,7 @@ const SignIn = ({ type }: { type: string }) => {
                             render={({ field }) => (
                                 <FormItem className="flex w-full flex-col">
                                     <FormLabel className="paragraph-semibold">
-                                        Username
+                                        Tên đăng nhập
                                     </FormLabel>
                                     <FormControl className="mt-1">
                                         <Input
@@ -144,7 +144,7 @@ const SignIn = ({ type }: { type: string }) => {
                             render={({ field }) => (
                                 <FormItem className="flex w-full flex-col">
                                     <FormLabel className="paragraph-semibold">
-                                        Password
+                                        Mật khẩu
                                     </FormLabel>
                                     <FormControl className="mt-1">
                                         <Input
@@ -161,7 +161,7 @@ const SignIn = ({ type }: { type: string }) => {
                         <Button
                             type="submit"
                             className="w-full bg-sub hover:bg-[#b88e2f]/90">
-                            Sign In
+                            Đăng nhập
                         </Button>
                     </form>
                 </Form>
@@ -172,7 +172,7 @@ const SignIn = ({ type }: { type: string }) => {
                     <Link
                         href={"/sign-up"}
                         className="underline text-sub hover:text-[#b88e2f]/80">
-                        Sign Up
+                        Đăng ký
                     </Link>
                 </CardFooter>
             )}

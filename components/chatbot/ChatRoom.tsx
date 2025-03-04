@@ -74,7 +74,7 @@ export default function ChatRoom({ messages, setMessages }: ChatRoomProps) {
     return (
         <>
             {isOpened ? (
-                <div className="flex w-[800px] h-[800px] max-md:w-[400px] max-md:h-[600px] max-sm:w-[300px] max-sm:h-[600px] flex-col bg-white rounded-lg shadow-lg absolute bottom-0 right-0 overflow-hidden">
+                <div className="flex 2xl:w-[800px] lg:w-[400px] lg:h-[400px] 2xl:h-[600px] max-lg:w-[400px] max-lg:h-[400px] max-sm:w-[300px] max-sm:h-[600px] flex-col bg-white rounded-lg shadow-lg absolute bottom-0 right-0 overflow-hidden">
                     <div className="flex w-full justify-between items-center bg-white border-b py-3 px-4">
                         <div className="flex items-center gap-2">
                             <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center relative">

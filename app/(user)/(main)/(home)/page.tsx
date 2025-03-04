@@ -48,10 +48,10 @@ const page = () => {
                 <div className="flex flex-col bg-main space-y-8 w-[600px] max-md:w-[400px] max-sm:w-[300px] rounded-lg md:mr-40 p-10">
                     <div className="flex flex-col gap-4">
                         <p className="text-black font-bold text-lg">
-                            New Arrival
+                            Sản phẩm mới
                         </p>
                         <h1 className="text-7xl text-sub max-md:text-3xl font-bold">
-                            Discover Our New Collection
+                            Khám phá bộ sưu tập mới của chúng tôi
                         </h1>
                         <p className="font-bold">
                             Lorem ipsum dolor sit amet, consectetur adipiscing
@@ -62,7 +62,7 @@ const page = () => {
                     <Button
                         className="bg-sub rounded-none px-12 py-10 w-fit hover:bg-[#b88e2f]/90"
                         onClick={() => router.push("/shop")}>
-                        <p className="text-xl">Shop Now</p>
+                        <p className="text-xl">Khám phá ngay</p>
                     </Button>
                 </div>
             </section>
@@ -131,7 +131,7 @@ const page = () => {
                     <Link href="/shop" className="">
                         <Button className="bg-main hover:bg-[#fff3e3]/70 px-10 py-6 shadow-lg border border-[#b88e2f]">
                             <p className="text-sub font-bold">
-                                Explore more...
+                                Khám phá ngay...
                             </p>
                         </Button>
                     </Link>

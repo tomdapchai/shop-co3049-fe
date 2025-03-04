@@ -74,9 +74,9 @@ const SignUp = () => {
     return (
         <Card className="w-[400px] h-fit">
             <CardHeader>
-                <CardTitle className="text-sub">Sign Up</CardTitle>
+                <CardTitle className="text-sub">Đăng ký</CardTitle>
                 <CardDescription>
-                    Provide login credentials to sign you in
+                    Hãy điền thông tin đăng ký tài khoản
                 </CardDescription>
             </CardHeader>
             <CardContent>
@@ -90,7 +90,7 @@ const SignUp = () => {
                             render={({ field }) => (
                                 <FormItem className="flex w-full flex-col">
                                     <FormLabel className="paragraph-semibold">
-                                        Username
+                                        Tên đăng nhập
                                     </FormLabel>
                                     <FormControl className="mt-1">
                                         <Input
@@ -109,7 +109,7 @@ const SignUp = () => {
                             render={({ field }) => (
                                 <FormItem className="flex w-full flex-col">
                                     <FormLabel className="paragraph-semibold">
-                                        Password
+                                        Mật khẩu
                                     </FormLabel>
                                     <FormControl className="mt-1">
                                         <Input
@@ -129,7 +129,7 @@ const SignUp = () => {
                             render={({ field }) => (
                                 <FormItem className="flex w-full flex-col">
                                     <FormLabel className="paragraph-semibold">
-                                        Confirm Password
+                                        Xác nhận mật khẩu
                                     </FormLabel>
                                     <FormControl className="mt-1">
                                         <Input
@@ -146,17 +146,17 @@ const SignUp = () => {
                         <Button
                             type="submit"
                             className="w-full bg-sub hover:bg-[#b88e2f]/90">
-                            Sign Up
+                            Đăng ký
                         </Button>
                     </form>
                 </Form>
             </CardContent>
             <CardFooter className="text-sm flex gap-2">
-                <p className="text-slate-400">Already had an account?</p>
+                <p className="text-slate-400">Đã có tài khoản</p>
                 <Link
                     href={"/sign-in"}
                     className="underline text-sub hover:text-[#b88e2f]/80">
-                    Sign In
+                    Đăng nhập
                 </Link>
             </CardFooter>
         </Card>
