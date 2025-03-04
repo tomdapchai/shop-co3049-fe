@@ -77,7 +77,7 @@ const ProductReviewCard = ({
 
     return (
         <Card
-            className={`absolute top-0 left-0 right-0 mx-auto w-full max-w-[600px] overflow-hidden transition-all duration-500 cursor-pointer`}
+            className={`absolute top-0 left-0 right-0 mx-auto w-full max-w-[600px] max-md:w-[300px] overflow-hidden transition-all duration-500 cursor-pointer `}
             style={{
                 transform,
                 zIndex,

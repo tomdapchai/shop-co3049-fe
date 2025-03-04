@@ -46,7 +46,8 @@ const page = () => {
     useEffect(() => {
         // fetch products
         if (searchParams) setQuery(searchParams[1]);
-    }, []);
+        else setQuery("");
+    }, [searchParams]);
 
     useEffect(() => {
         if (query && query !== "") {
@@ -60,6 +61,7 @@ const page = () => {
             );
             setQueryProducts(filtered);
         } else {
+            console.log("No query");
             setQueryProducts(products);
         }
     }, [query]);
@@ -142,7 +144,6 @@ const page = () => {
                             <Button
                                 variant="outline"
                                 onClick={() => {
-                                    setQuery("");
                                     // reset the url - remove the query part
                                     window.history.replaceState(
                                         {},
