@@ -89,14 +89,14 @@ export default function ProductRoomsMenu({ rooms }: Props) {
                 className={`font-bold rounded-none ${
                     isClicked ? "border-b-2 border-amber-500" : ""
                 }`}>
-                Rooms
+                PHÒNG
             </Button>
 
             {/* Categories dropdown */}
             {isClicked && (
                 <div className="absolute left-0 w-screen bg-white shadow-lg z-50 border-t border-gray-200">
                     <div className="w-full flex flex-col justify-start items-start px-4 ">
-                        <p className="font-bold text-base">Rooms</p>
+                        <p className="font-bold text-base">Các phòng</p>
                         <div
                             className="overflow-x-auto pb-4 no-scrollbar"
                             ref={scrollContainerRef}>

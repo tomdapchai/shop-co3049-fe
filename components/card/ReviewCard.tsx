@@ -37,11 +37,9 @@ export function ReviewCard({
         await deleteReview(reviewId as string);
     };
 
-    console.log("hmm");
-
     return (
         <Card className="w-full">
-            <CardHeader className="flex flex-row items-center space-x-4 pb-4 bg-main">
+            <CardHeader className="flex flex-row max-md:flex-col max-md:items-start max-md:justify-start max-md:space-y-2 items-center md:space-x-4 pb-4 bg-main">
                 <div className="flex-1">
                     <h3 className="text-lg font-semibold">
                         {reviewer} {admin && "- "}

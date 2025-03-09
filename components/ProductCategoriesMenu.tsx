@@ -89,14 +89,14 @@ export default function ProductCategoriesMenu({ categories }: Props) {
                 className={`font-bold rounded-none ${
                     isClicked ? "border-b-2 border-amber-500" : ""
                 }`}>
-                Products
+                SẢN PHẨM
             </Button>
 
             {/* Categories dropdown */}
             {isClicked && (
                 <div className="absolute left-0 w-screen bg-white shadow-lg z-50 border-t border-gray-200">
                     <div className="w-full flex flex-col justify-start items-start px-4 ">
-                        <p className="font-bold text-base">Categories</p>
+                        <p className="font-bold text-base">Các danh mục</p>
                         <div
                             className="overflow-x-auto pb-4 no-scrollbar"
                             ref={scrollContainerRef}>

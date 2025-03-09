@@ -291,12 +291,26 @@ export default function CreateProductPage() {
             console.log("Uploaded Images:", finalUploadedImages);
             console.log("Description Images:", finalDescriptionImages);
 
-            const { productId, shortDescription, fullDescription, ...rest } =
-                values;
+            const {
+                productId,
+                shortDescription,
+                fullDescription,
+                size,
+                ...rest
+            } = values;
 
-            console.log("Product Data:", { ...rest });
             await createProduct({
                 ...rest,
+                size: size.sort((a: string, b: string) => {
+                    const sizeOrder = {
+                        compact: 1,
+                        standard: 2,
+                        large: 3,
+                        oversized: 4,
+                    };
+                    // @ts-ignore
+                    return sizeOrder[a] - sizeOrder[b];
+                }),
                 slug: productId,
                 overview: shortDescription,
                 description: convertedDescription,

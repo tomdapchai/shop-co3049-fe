@@ -1,4 +1,5 @@
-import { Check } from "lucide-react";
+// @ts-nocheck
+/* import { Check } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -59,4 +60,4 @@ export function TagFilter({
             </PopoverContent>
         </Popover>
     );
-}
+} */

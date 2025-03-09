@@ -152,7 +152,7 @@ export default function CheckoutPage() {
                             </div>
                             <div className="text-right">
                                 <h2 className="text-lg sm:text-xl font-bold">
-                                    Subtotal
+                                    Tạm tính
                                 </h2>
                             </div>
                         </div>
@@ -207,14 +207,14 @@ export default function CheckoutPage() {
                                             {appliedCoupon}
                                         </span>
                                         <span className="ml-2 text-sm text-gray-600">
-                                            ({discount}% off)
+                                            (Giảm {discount}%)
                                         </span>
                                     </div>
                                     <Button
                                         variant="ghost"
                                         onClick={removeCoupon}
                                         className="h-8 text-sm text-red-500 hover:text-red-700">
-                                        Remove
+                                        Xoá
                                     </Button>
                                 </div>
                             )}
@@ -222,7 +222,7 @@ export default function CheckoutPage() {
 
                         {/* Order summary */}
                         <div className="flex justify-between pt-4 border-t mt-4">
-                            <span className="text-gray-700">Subtotal</span>
+                            <span className="text-gray-700">Tạm tính</span>
                             <span className="font-medium">
                                 {formatPrice(subtotal)}
                             </span>
@@ -231,7 +231,7 @@ export default function CheckoutPage() {
                         {discount > 0 && (
                             <div className="flex justify-between pt-2">
                                 <span className="text-gray-700">
-                                    Discount ({discount}%)
+                                    Giảm giá ({discount}%)
                                 </span>
                                 <span className="font-medium text-green-600">
                                     -{formatPrice((subtotal * discount) / 100)}
@@ -240,7 +240,7 @@ export default function CheckoutPage() {
                         )}
 
                         <div className="flex justify-between pt-2">
-                            <span className="text-gray-700">Total</span>
+                            <span className="text-gray-700">Tổng tiền</span>
                             <span className="text-yellow-500 font-extrabold text-lg">
                                 {formatPrice(calculateTotal())}
                             </span>

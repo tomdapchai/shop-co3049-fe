@@ -243,7 +243,15 @@ const page = ({ params }: { params: Promise<{ slug: string }> }) => {
                                                                     ? "bg-sub hover:bg-sub"
                                                                     : ""
                                                             }`}>
-                                                            {size}
+                                                            {size == "standard"
+                                                                ? "Tiêu chuẩn"
+                                                                : size ==
+                                                                  "large"
+                                                                ? "Lớn"
+                                                                : size ==
+                                                                  "oversized"
+                                                                ? "Lớn hơn"
+                                                                : "Nhỏ gọn"}
                                                         </Button>
                                                     ))}
                                                 </div>

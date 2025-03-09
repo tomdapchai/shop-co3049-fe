@@ -92,7 +92,7 @@ export default function AddressForm({
                             name="name"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Name</FormLabel>
+                                    <FormLabel>Tên</FormLabel>
                                     <FormControl>
                                         <Input
                                             placeholder="John Doe"
@@ -122,14 +122,14 @@ export default function AddressForm({
                     </div>
                 ) : (
                     <div className="flex flex-col justify-start items-start space-y-4">
-                        <p className="text-xl font-bold">User info</p>
+                        <p className="text-xl font-bold">Thông tin của bạn</p>
                         <div className="flex max-md:flex-col max-md:items-center max-md:space-y-6 w-full justify-between md:space-x-10">
                             <FormField
                                 control={form.control}
                                 name="name"
                                 render={({ field }) => (
                                     <FormItem className="w-full">
-                                        <FormLabel>Display name</FormLabel>
+                                        <FormLabel>Tên</FormLabel>
                                         <FormControl>
                                             <Input
                                                 placeholder="John Doe"
@@ -137,8 +137,8 @@ export default function AddressForm({
                                             />
                                         </FormControl>
                                         <Label className="text-xs text-slate-500">
-                                            This will be used for default
-                                            billing name, and in your reviews.
+                                            Đây sẽ được dùng làm tên mặc định
+                                            khi mua hàng và đánh giá sản phẩm.
                                         </Label>
                                         <FormMessage />
                                     </FormItem>
@@ -157,9 +157,9 @@ export default function AddressForm({
                                             />
                                         </FormControl>
                                         <Label className="text-xs text-slate-500">
-                                            This will be used when we need to
-                                            contact you if there is problem
-                                            about the account.
+                                            Email sẽ được dùng khi chúng tôi
+                                            muốn liên lạc với bạn về một vấn đề
+                                            bất kì.
                                         </Label>
                                         <FormMessage />
                                     </FormItem>

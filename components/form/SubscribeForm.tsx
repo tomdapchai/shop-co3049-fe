@@ -66,11 +66,12 @@ export const SubscribeForm = () => {
                 onSubmit={form.handleSubmit(onSubmit)}
                 className="flex flex-col space-y-4 justify-center items-center p-8">
                 <div className="flex flex-col space-y-2 justify-center items-center">
-                    <h1 className="text-3xl max-md:text-2xl font-bold whitespace-nowrap">
+                    <h1 className="text-3xl max-md:text-2xl font-bold text-center">
                         GIỮ LIÊN LẠC VỚI FURNORA NHÉ, HỠI TÌNH YÊU!
                     </h1>
                     <p className="text-sm text-slate-500">
-                        Đăng ký ngay để cập nhật những xu hướng nội thất mới nhất. 
+                        Đăng ký ngay để cập nhật những xu hướng nội thất mới
+                        nhất.
                     </p>
                 </div>
 

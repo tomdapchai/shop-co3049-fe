@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { ColorPicker as AntdColorPicker } from "antd";
 import { X } from "lucide-react";
@@ -17,13 +17,13 @@ export function ColorPickerGroup({
     onChange,
     isEditing = false,
 }: ColorPickerProps) {
-    const [selectedColor, setSelectedColor] = React.useState<string>("#1677ff");
-    const [colors, setColors] = React.useState<string[]>(value || []);
+    const [selectedColor, setSelectedColor] = useState<string>("#1677ff");
+    const [colors, setColors] = useState<string[]>(value || []);
 
     // Update parent form when colors change
-    React.useEffect(() => {
+    useEffect(() => {
         onChange(colors);
-    }, [colors, onChange]);
+    }, [colors]);
 
     const handleAddColor = () => {
         if (!selectedColor) return;

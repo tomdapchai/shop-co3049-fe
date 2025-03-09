@@ -182,7 +182,7 @@ const Header = () => {
                                                 }
                                                 className="bg-red-500 hover:bg-red-500/90">
                                                 <p className="text-white">
-                                                   Xóa giỏ hàng
+                                                    Xóa giỏ hàng
                                                 </p>
                                             </Button>
                                         </div>
