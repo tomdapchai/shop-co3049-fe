@@ -75,7 +75,7 @@ export function ReviewCard({
                 <p className="text-sm leading-relaxed">{comment}</p>
             </CardContent>
             <CardFooter className="text-sm text-muted-foreground flex flex-col space-y-2 justify-start items-start">
-                <p>Was this review helpful?</p>
+                <p>Đánh giá này có hữu ích không?</p>
                 {admin && reviewId && (
                     <Button
                         onClick={handleDelete}

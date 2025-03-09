@@ -19,7 +19,7 @@ const ForYou = ({ products }: ForYouProps) => {
 
     return (
         <div className="flex flex-col justify-center items-center w-full gap-8">
-            <h1 className="font-bold text-3xl">Các sản phẩm dành cho bạn</h1>
+            <h1 className="font-bold text-3xl">CÓ THỂ BẠN SẼ THÍCH</h1>
             <div className="grid grid-cols-4 gap-4 max-lg:grid-cols-3 max-md:grid-cols-2 max-sm:grid-cols-1">
                 {suggestedProducts.map((product) => (
                     <ProductCard

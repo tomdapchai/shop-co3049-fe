@@ -99,7 +99,7 @@ export default function BlogManagement() {
 
             <div className="flex flex-col md:flex-row gap-4 mb-6">
                 <Input
-                    placeholder="Search blogs..."
+                    placeholder="Tìm kiếm Blogs..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                     className="md:w-1/3"
@@ -155,7 +155,7 @@ export default function BlogManagement() {
                         setCurrentPage((page) => Math.max(1, page - 1))
                     }
                     disabled={currentPage === 1}>
-                    Previous
+                    Trước
                 </Button>
                 <span>
                     Page {currentPage} of {pageCount}
@@ -165,7 +165,7 @@ export default function BlogManagement() {
                         setCurrentPage((page) => Math.min(pageCount, page + 1))
                     }
                     disabled={currentPage === pageCount}>
-                    Next
+                    Sau
                 </Button>
             </div>
         </div>

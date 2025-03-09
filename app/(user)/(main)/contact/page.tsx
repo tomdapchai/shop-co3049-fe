@@ -62,33 +62,32 @@ export default function ContactPage() {
                     <div className="flex items-start space-x-4">
                         <MapPin className="w-6 h-6 text-primary" />
                         <div>
-                            <h2 className="text-lg font-bold">Address</h2>
+                            <h2 className="text-lg font-bold text-[#b88e2f]">Địa chỉ</h2>
                             <p>{siteInfo!.address}</p>
                         </div>
                     </div>
                     <div className="flex items-start space-x-4">
                         <Phone className="w-6 h-6 text-primary" />
                         <div>
-                            <h2 className="text-lg font-bold">Phone</h2>
+                            <h2 className="text-lg font-bold text-[#b88e2f]">Số điện thoại</h2>
                             <p>{siteInfo!.phoneNumber}</p>
                         </div>
                     </div>
                     <div className="flex items-start space-x-4">
                         <Mail className="w-6 h-6 text-primary" />
                         <div>
-                            <h2 className="text-lg font-bold">Email address</h2>
+                            <h2 className="text-lg font-bold text-[#b88e2f]">Địa chỉ Email</h2>
                             <p>{siteInfo!.email}</p>
                         </div>
                     </div>
                 </aside>
                 <main className=" flex-1 flex-col justify-start items-start w-full">
-                    <h2 className="text-2xl font-bold mb-4 text-center">
-                        Get In Touch With Us
+                    <h2 className="text-2xl font-bold mb-4 text-center text-[#d0ad50] hover:text-[#b88e2f]">
+                        FURNORA - TINH HOA NỘI THẤT, ĐẲNG CẤP VƯƠN XA! 
                     </h2>
-                    <p className="text-muted-foreground mb-8">
-                        For more information about our products & services,
-                        please feel free to drop us an email. Our staff always
-                        be there to help you out. Do not hesitate!
+                    <p className="text-muted-foreground mb-8 text-center">
+                       👉 Để biết thêm thông tin về sản phẩm và dịch vụ, 
+                       đừng ngần ngại liên hệ với chúng tôi. Đội ngũ FURNORA luôn sẵn sàng hỗ trợ bạn!
                     </p>
                     <Form {...form}>
                         <form
@@ -99,7 +98,7 @@ export default function ContactPage() {
                                 name="name"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel>Your name</FormLabel>
+                                        <FormLabel className="font-bold">Họ và tên:</FormLabel>
                                         <FormControl>
                                             <Input
                                                 placeholder="John Doe"
@@ -115,7 +114,7 @@ export default function ContactPage() {
                                 name="email"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel>Email address</FormLabel>
+                                        <FormLabel className="font-bold">Địa chỉ Email:</FormLabel>
                                         <FormControl>
                                             <Input
                                                 type="email"
@@ -132,8 +131,8 @@ export default function ContactPage() {
                                 name="phoneNumber"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel>
-                                            Phone number (optional)
+                                        <FormLabel className="font-bold">
+                                            Số điện thoại:
                                         </FormLabel>
                                         <FormControl>
                                             <Input
@@ -142,8 +141,7 @@ export default function ContactPage() {
                                             />
                                         </FormControl>
                                         <FormDescription>
-                                            We'll only use this to contact you
-                                            if needed.
+                                            Chúng tôi sẽ chỉ liên hệ với bạn bằng số điện thoại trong trường hợp cần thiết. 
                                         </FormDescription>
                                         <FormMessage />
                                     </FormItem>
@@ -154,12 +152,13 @@ export default function ContactPage() {
                                 name="subject"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel>
-                                            Subject (optional)
+                                        <FormLabel className="font-bold">
+                                            Chủ đề:
                                         </FormLabel>
                                         <FormControl>
                                             <Input
-                                                placeholder="What's this about?"
+                                                placeholder="Chủ đề là gì?"
+                                                className="italic"
                                                 {...field}
                                             />
                                         </FormControl>
@@ -172,11 +171,11 @@ export default function ContactPage() {
                                 name="message"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel>Message</FormLabel>
+                                        <FormLabel className="font-bold"> Thắc mắc:</FormLabel>
                                         <FormControl>
                                             <Textarea
-                                                placeholder="Hi! I'd like to ask about..."
-                                                className="min-h-[100px]"
+                                                placeholder="Xin chào! Tôi muốn hỏi về..."
+                                                className="min-h-[100px] italic"
                                                 {...field}
                                             />
                                         </FormControl>
@@ -184,8 +183,8 @@ export default function ContactPage() {
                                     </FormItem>
                                 )}
                             />
-                            <Button type="submit" className="w-full">
-                                Submit
+                            <Button type="submit" className="w-full font-bold">
+                                Gửi
                             </Button>
                         </form>
                     </Form>

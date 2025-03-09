@@ -47,14 +47,13 @@ const page = () => {
                 <div className="flex flex-col bg-main space-y-8 w-[600px] max-md:w-[400px] max-sm:w-[300px] rounded-lg md:mr-40 p-10">
                     <div className="flex flex-col gap-4">
                         <p className="text-black font-bold text-lg">
-                            Sản phẩm mới
+                        ✨SIÊU PHẨM MỚI RA MẮT!✨
                         </p>
                         <h1 className="text-7xl text-sub max-md:text-3xl font-bold">
                             Khám phá bộ sưu tập mới của chúng tôi
                         </h1>
                         <p className="font-bold">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing
-                            elit. Ut elit tellus, luctus nec ullamcorper mattis.
+                        FURNORA giới thiệu bộ sưu tập mới với thiết kế tinh tế, hiện đại, giúp nâng tầm không gian sống của bạn.🏡💛
                         </p>
                     </div>
 
@@ -75,9 +74,10 @@ const page = () => {
 
             <section className="flex flex-col justify-center items-center w-full gap-14 max-md:p-4">
                 <div className="flex justify-center items-center flex-col">
-                    <h1 className="font-bold text-3xl">Browse The Range</h1>
-                    <p className="text-gray-400">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                    <h1 className="font-bold text-3xl">BẠN ĐANG TÌM KIẾM PHONG CÁCH MỚI CHO NGÔI NHÀ CỦA MÌNH?</h1>
+                    <p className="text-gray-400 text-center">
+                        Sáng tạo một không gian sống đẹp và tiện nghi với các sản phẩm chất lượng của FURNORA. 
+                        <br /> Đến với FURNORA, bạn luôn có thể dễ dàng tìm thấy những sản phẩm sang trọng với giá cả phải chăng. <br />
                     </p>
                 </div>
 
@@ -101,7 +101,7 @@ const page = () => {
             </section>
 
             <section className="flex flex-col justify-center items-center w-full gap-16">
-                <h1 className="font-bold text-4xl">Our Products</h1>
+                <h1 className="font-bold text-4xl">SẢN PHẨM NỔI BẬT</h1>
                 <div className="flex flex-col justify-center items-center w-full gap-8">
                     <div className="grid grid-cols-4 gap-4 max-lg:grid-cols-3 max-md:grid-cols-2 max-sm:grid-cols-1">
                         {productImages.map((product) => (
@@ -130,7 +130,7 @@ const page = () => {
                     <Link href="/shop" className="">
                         <Button className="bg-main hover:bg-[#fff3e3]/70 px-10 py-6 shadow-lg border border-[#b88e2f]">
                             <p className="text-sub font-bold">
-                                Khám phá ngay...
+                                KHÁM PHÁ THÊM
                             </p>
                         </Button>
                     </Link>
@@ -141,7 +141,7 @@ const page = () => {
                 <section className="flex flex-col justify-center items-center w-full gap-8 bg-main px-4 py-6">
                     <div className="flex flex-col justify-center items-center space-y-4">
                         <p className="font-bold text-gray-400 text-lg">
-                            Share your setup with
+                            Nhanh tay sở hữu sản phẩm nổi bật với giá "hời"!
                         </p>
                         <h1 className="font-bold text-3xl">
                             #FurnoraFurniture

@@ -132,14 +132,14 @@ export default function CheckoutPage() {
                     className="z-10"
                 />
                 <h1 className="relative z-10 font-bold text-6xl text-sub">
-                    Checkout
+                    THANH TOÁN
                 </h1>
             </div>
             <div className="bg-white rounded w-full px-8 pt-6 pb-8 space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <div className="w-full md:px-12 md:py-12">
                         <h2 className="text-3xl font-bold mb-6">
-                            Billing details
+                            Thông tin đơn hàng
                         </h2>
                         <AddressForm onSubmit={handleSubmit} />
                     </div>
@@ -147,7 +147,7 @@ export default function CheckoutPage() {
                         <div className="grid grid-cols-2 mb-4">
                             <div className="text-left">
                                 <h2 className="text-lg sm:text-xl font-bold">
-                                    Product
+                                    Sản phẩm
                                 </h2>
                             </div>
                             <div className="text-right">
@@ -177,11 +177,11 @@ export default function CheckoutPage() {
 
                         {/* Coupon Section */}
                         <div className="pt-4 pb-2 border-t mt-4">
-                            <h3 className="font-semibold mb-2">Promo Code</h3>
+                            <h3 className="font-semibold mb-2">Mã giảm giá</h3>
                             {!appliedCoupon ? (
                                 <div className="flex space-x-2">
                                     <Input
-                                        placeholder="Enter coupon code"
+                                        placeholder="Nhập mã giảm giá"
                                         value={couponCode}
                                         onChange={(e) =>
                                             setCouponCode(e.target.value)

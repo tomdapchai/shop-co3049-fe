@@ -67,10 +67,10 @@ export const SubscribeForm = () => {
                 className="flex flex-col space-y-4 justify-center items-center p-8">
                 <div className="flex flex-col space-y-2 justify-center items-center">
                     <h1 className="text-3xl max-md:text-2xl font-bold whitespace-nowrap">
-                        Subscribe to our newsletter
+                        GIỮ LIÊN LẠC VỚI FURNORA NHÉ, HỠI TÌNH YÊU!
                     </h1>
                     <p className="text-sm text-slate-500">
-                        Sign up to be the first hearing our latest news
+                        Đăng ký ngay để cập nhật những xu hướng nội thất mới nhất. 
                     </p>
                 </div>
 
@@ -81,7 +81,7 @@ export const SubscribeForm = () => {
                         <Input
                             id="email"
                             type="email"
-                            placeholder="Enter your email here"
+                            placeholder="Nhập email của bạn ở đây..."
                             className="p-4"
                             {...field}
                         />
@@ -89,8 +89,8 @@ export const SubscribeForm = () => {
                 <FormMessage />
                 <Button
                     type="submit"
-                    className="w-full md:w-[400px]  bg-sub p-4 hover:bg-[#b88e2f]/90">
-                    Subscribe
+                    className="w-full md:w-[400px]  bg-sub p-4 hover:bg-[#b88e2f]/90 font-bold">
+                    Đăng ký
                 </Button>
             </form>
         </Form>

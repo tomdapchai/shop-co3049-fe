@@ -201,7 +201,7 @@ const page = ({ params }: { params: Promise<{ slug: string }> }) => {
                         </div>
 
                         <span className="text-muted-foreground">
-                            ({product.reviews.length} Customer Reviews)
+                            ({product.reviews.length} Đánh giá)
                         </span>
                     </div>
 
@@ -218,7 +218,7 @@ const page = ({ params }: { params: Promise<{ slug: string }> }) => {
                                     render={({ field }) => (
                                         <FormItem>
                                             <FormLabel className="font-medium mb-2">
-                                                Size
+                                                Kích thước
                                             </FormLabel>
                                             <FormControl>
                                                 <div className="flex gap-2 flex-wrap">
@@ -258,7 +258,7 @@ const page = ({ params }: { params: Promise<{ slug: string }> }) => {
                                     render={({ field }) => (
                                         <FormItem>
                                             <FormLabel className="font-medium mb-2">
-                                                Color
+                                                Màu sắc
                                             </FormLabel>
                                             <FormControl>
                                                 <div className="flex gap-2">
@@ -299,7 +299,7 @@ const page = ({ params }: { params: Promise<{ slug: string }> }) => {
                                         render={({ field }) => (
                                             <FormItem>
                                                 <FormLabel className="font-medium mb-2">
-                                                    Quantity
+                                                    Số lượng
                                                 </FormLabel>
                                                 <FormControl>
                                                     <div className="flex items-center gap-4 flex-wrap">
@@ -356,7 +356,7 @@ const page = ({ params }: { params: Promise<{ slug: string }> }) => {
                                     <Button
                                         type="submit"
                                         className="flex-1 flex-grow bg-sub hover:bg-[#b88e2f]/90">
-                                        Add To Cart
+                                        Thêm vào giỏ
                                     </Button>
                                 </div>
                             </form>
@@ -380,14 +380,14 @@ const page = ({ params }: { params: Promise<{ slug: string }> }) => {
 
             <Tabs defaultValue="description" className="space-y-4">
                 <TabsList className="flex-wrap">
-                    <TabsTrigger value="description">Description</TabsTrigger>
+                    <TabsTrigger value="description">Mô tả </TabsTrigger>
                     <TabsTrigger value="reviews">
-                        Reviews ({product.reviews.length})
+                        Đánh giá ({product.reviews.length})
                     </TabsTrigger>
                     {extensions.find((ex) => ex.id == "price-comparison")
                         ?.enabled && (
                         <TabsTrigger value="comparision">
-                            Price Comparision
+                            So sánh sản phẩm
                         </TabsTrigger>
                     )}
                 </TabsList>
@@ -426,7 +426,7 @@ const page = ({ params }: { params: Promise<{ slug: string }> }) => {
                                         }}
                                         className="bg-sub p-6 hover:bg-[#b88e2f]/90">
                                         <p className="text-lg font-bold">
-                                            Log in to review
+                                            Đăng nhập để đánh giá
                                         </p>
                                     </Button>
                                 </div>
@@ -449,7 +449,7 @@ const page = ({ params }: { params: Promise<{ slug: string }> }) => {
 
             <Separator className="mt-10 mb-6" />
             <div className="w-full flex flex-col justify-center items-center">
-                <h1 className="text-2xl font-bold">Related Products</h1>
+                <h1 className="text-2xl font-bold">SẢN PHẨM TƯƠNG TỰ</h1>
                 <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 xl:grid-cols-4 gap-4 mt-6">
                     {products.filter((prod) => {
                         // compare tags

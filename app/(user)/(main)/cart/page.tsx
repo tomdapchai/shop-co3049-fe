@@ -17,7 +17,7 @@ const page = () => {
 
     return (
         <div className="container mx-auto py-8 max-md:px-8">
-            <h1 className="text-3xl font-bold mb-8">My Cart</h1>
+            <h1 className="text-3xl font-bold mb-8">Giỏ hàng của tôi</h1>
             {cart.length === 0 ? (
                 <div className="flex flex-col justify-start items-start space-y-4">
                     <h2 className="text-2xl font-semibold mb-4">
@@ -48,7 +48,7 @@ const page = () => {
                             variant="secondary"
                             className="bg-red-500 hover:bg-red-500/90"
                             onClick={clearCart}>
-                            <p className="text-white">Clear Cart</p>
+                            <p className="text-white">Xóa giỏ hàng</p>
                         </Button>
                     </div>
                     <Separator
@@ -58,10 +58,10 @@ const page = () => {
                     <div className="w-full md:w-1/3 mt-8 md:mt-0">
                         <div className="bg-background p-6 rounded-lg shadow-md">
                             <h2 className="text-2xl font-semibold mb-4">
-                                Order Summary
+                                Tổng đơn hàng
                             </h2>
                             <div className="flex justify-between items-center mb-4">
-                                <span className="text-lg">Total:</span>
+                                <span className="text-lg">Trị giá:</span>
                                 <span className="text-2xl font-bold">
                                     {formatPrice(calculateTotal())}
                                 </span>
@@ -70,7 +70,7 @@ const page = () => {
                                 className="w-full bg-sub hover:bg-[#b88e2f]/90"
                                 size="lg"
                                 onClick={() => router.push("/checkout")}>
-                                Proceed to Checkout
+                                Tiến hành thanh toán
                             </Button>
                         </div>
                     </div>

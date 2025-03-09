@@ -89,13 +89,13 @@ const SignUp = () => {
                             name="username"
                             render={({ field }) => (
                                 <FormItem className="flex w-full flex-col">
-                                    <FormLabel className="paragraph-semibold">
+                                    <FormLabel className="paragraph-semibold font-bold">
                                         Tên đăng nhập
                                     </FormLabel>
                                     <FormControl className="mt-1">
                                         <Input
                                             className="no-focus border"
-                                            placeholder="Enter your username here"
+                                            placeholder="Nhập tên đăng nhập tại đây"
                                             {...field}
                                         />
                                     </FormControl>
@@ -108,13 +108,13 @@ const SignUp = () => {
                             name="password"
                             render={({ field }) => (
                                 <FormItem className="flex w-full flex-col">
-                                    <FormLabel className="paragraph-semibold">
+                                    <FormLabel className="paragraph-semibold font-bold">
                                         Mật khẩu
                                     </FormLabel>
                                     <FormControl className="mt-1">
                                         <Input
                                             className="no-fcous border"
-                                            placeholder="Enter your password here"
+                                            placeholder="Nhập mật khẩu tại đây"
                                             type="password"
                                             {...field}
                                         />
@@ -128,13 +128,13 @@ const SignUp = () => {
                             name="confirmPassword"
                             render={({ field }) => (
                                 <FormItem className="flex w-full flex-col">
-                                    <FormLabel className="paragraph-semibold">
+                                    <FormLabel className="paragraph-semibold font-bold">
                                         Xác nhận mật khẩu
                                     </FormLabel>
                                     <FormControl className="mt-1">
                                         <Input
                                             className="no-focus border"
-                                            placeholder="Confirm your password here"
+                                            placeholder="Xác nhận mật khẩu tại đây"
                                             type="password"
                                             {...field}
                                         />

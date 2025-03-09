@@ -17,19 +17,19 @@ const Footer = () => {
                     {/* Column 1: About */}
                     <div>
                         <h3 className="text-lg font-medium uppercase mb-4">
-                            Nội Thất MOHO
+                            Nội Thất FURNORA
                         </h3>
                         <p className="text-gray-600 text-sm leading-relaxed">
-                            Nội Thất MOHO là thương hiệu đến từ Savimex với gần
-                            40 năm kinh nghiệm trong việc sản xuất và xuất khẩu
-                            nội thất đạt chuẩn quốc tế.
+                            Nội Thất FURNORA là thương hiệu nội thất mang đến sự tinh tế và tiện nghi, 
+                            kết hợp thiết kế hiện đại với chất lượng bền bỉ, 
+                            giúp không gian sống của bạn trở nên ấm cúng và đầy phong cách.
                         </p>
                     </div>
 
                     {/* Column 2: Services */}
                     <div>
                         <h3 className="text-lg font-medium uppercase mb-4">
-                            Dịch Vụ
+                            DỊCH VỤ
                         </h3>
                         <ul className="space-y-2 text-sm text-gray-600">
                             <li>
@@ -64,7 +64,7 @@ const Footer = () => {
                                 <Link
                                     href="#"
                                     className="hover:text-gray-900 transition-colors">
-                                    Khách Hàng Thân Thiết – MOHOmie
+                                    Khách Hàng Thân Thiết – FURNista 
                                 </Link>
                             </li>
                             <li>
@@ -90,9 +90,7 @@ const Footer = () => {
                                         [Khu Vực Tp. Hồ Chí Minh]
                                     </p>
                                     <p>
-                                        162 HT17, P. Hiệp Thành, Q. 12, TP. HCM
-                                        (Nằm trong khuôn viên công ty SAVIMEX
-                                        phía sau bến xe buýt Hiệp Thành)
+                                    15 Đường D5 P.25, Quận Bình Thạnh, TP Hồ Chí Minh, Việt Nam 
                                     </p>
                                     <div className="flex items-center mt-1">
                                         <span className="font-medium mr-2">
@@ -101,31 +99,13 @@ const Footer = () => {
                                         <Link
                                             href="tel:0971141140"
                                             className="hover:text-gray-900 transition-colors">
-                                            0971 141 140
+                                            (+84) 778 107 890
                                         </Link>
                                     </div>
                                 </div>
                             </div>
 
-                            <div className="flex">
-                                <MapPin className="h-5 w-5 text-gray-500 mr-2 flex-shrink-0 mt-0.5" />
-                                <div>
-                                    <p>
-                                        S05.03-S18 khu The Rainbow | Vinhomes
-                                        Grand Park, TP. Thủ Đức.
-                                    </p>
-                                    <div className="flex items-center mt-1">
-                                        <span className="font-medium mr-2">
-                                            Hotline:
-                                        </span>
-                                        <Link
-                                            href="tel:0931880424"
-                                            className="hover:text-gray-900 transition-colors">
-                                            0931 880 424
-                                        </Link>
-                                    </div>
-                                </div>
-                            </div>
+                            
                         </div>
                     </div>
 
@@ -135,7 +115,7 @@ const Footer = () => {
                             Fanpage
                         </h3>
                         <div className="text-sm text-gray-600">
-                            <p>Nội Thất MOHO</p>
+                            <p>Nội Thất FURNORA</p>
                             {/* Placeholder for social media embed or links */}
                             <div className="mt-3 flex space-x-3">
                                 {socials?.map((social) => (

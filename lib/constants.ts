@@ -44,17 +44,17 @@ export const colorOptions = [
 
 export const categoryImages = [
     {
-        title: "Phòng ăn",
+        title: "Phòng Ăn",
         src: "/images/categories/categories-1.png",
         alt: "dining",
     },
     {
-        title: "Phòng khách",
+        title: "Phòng Khách",
         src: "/images/categories/categories-2.png",
         alt: "living",
     },
     {
-        title: "Phòng ngủ",
+        title: "Phòng Ngủ",
         src: "/images/categories/categories-3.png",
         alt: "bedroom",
     },

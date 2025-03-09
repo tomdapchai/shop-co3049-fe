@@ -96,8 +96,8 @@ const Header = () => {
                 <>
                     <div className="flex justify-between items-center gap-10">
                         {navLinks.map((link) =>
-                            link.title !== "Products" &&
-                            link.title !== "Rooms" ? (
+                            link.title !== "SẢN PHẨM" &&
+                            link.title !== "PHÒNG" ? (
                                 <Link key={link.title} href={link.url}>
                                     <Button
                                         variant="link"
@@ -105,7 +105,7 @@ const Header = () => {
                                         {link.title}
                                     </Button>
                                 </Link>
-                            ) : link.title === "Products" ? (
+                            ) : link.title === "SẢN PHẨM" ? (
                                 <ProductCategoriesMenu
                                     key={link.title}
                                     categories={categories}
@@ -140,7 +140,7 @@ const Header = () => {
                             </SheetTrigger>
                             <SheetContent>
                                 <SheetHeader>
-                                    <SheetTitle>Cart items</SheetTitle>
+                                    <SheetTitle>Giỏ hàng của tôi</SheetTitle>
                                 </SheetHeader>
                                 {cart.length > 0 ? (
                                     <div className="flex flex-col justify-start items-start space-y-4 w-full">
@@ -171,7 +171,7 @@ const Header = () => {
                                                     onClick={() =>
                                                         setOpen(false)
                                                     }>
-                                                    View Cart
+                                                    Xem giỏ hàng
                                                 </Button>
                                             </Link>
                                             <Button
@@ -182,7 +182,7 @@ const Header = () => {
                                                 }
                                                 className="bg-red-500 hover:bg-red-500/90">
                                                 <p className="text-white">
-                                                    Clear Cart
+                                                   Xóa giỏ hàng
                                                 </p>
                                             </Button>
                                         </div>

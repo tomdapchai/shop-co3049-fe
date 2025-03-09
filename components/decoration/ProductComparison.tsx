@@ -77,11 +77,11 @@ const ProductComparison = ({
         <Card className="w-full mt-10">
             <CardHeader>
                 <CardTitle className="flex justify-between items-center">
-                    <span>Price Comparison</span>
+                    <span>So sánh giá</span>
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
                             <Button variant="outline" className="ml-auto">
-                                Add Products{" "}
+                                Thêm sản phẩm{" "}
                                 <ChevronDown className="ml-2 h-4 w-4" />
                             </Button>
                         </DropdownMenuTrigger>
@@ -145,7 +145,7 @@ const ProductComparison = ({
                                 <div className="mt-2 space-y-1 flex-grow">
                                     <div className="flex justify-between text-sm">
                                         <span className="text-muted-foreground">
-                                            Size Options:
+                                            Lựa chọn kích thước:
                                         </span>
                                         <span>
                                             {currentProduct.size.length}
@@ -153,7 +153,7 @@ const ProductComparison = ({
                                     </div>
                                     <div className="flex justify-between text-sm">
                                         <span className="text-muted-foreground">
-                                            Color Options:
+                                            Lựa chọn màu sắc:
                                         </span>
                                         <span>
                                             {currentProduct.color.length}
@@ -220,13 +220,13 @@ const ProductComparison = ({
                                     <div className="mt-4 space-y-2 flex-grow">
                                         <div className="flex justify-between text-sm">
                                             <span className="text-muted-foreground">
-                                                Size Options:
+                                                Lựa chọn kích thước:
                                             </span>
                                             <span>{product.size.length}</span>
                                         </div>
                                         <div className="flex justify-between text-sm">
                                             <span className="text-muted-foreground">
-                                                Color Options:
+                                                Lựa chọn màu sắc:
                                             </span>
                                             <span>{product.color.length}</span>
                                         </div>
@@ -253,7 +253,7 @@ const ProductComparison = ({
                             <div key={`empty-${index}`}>
                                 <Card className="h-full border-dashed">
                                     <CardContent className="p-4 flex flex-col items-center justify-center h-full text-muted-foreground">
-                                        <p>Select a product to compare</p>
+                                        <p>Chọn 1 sản phẩm để so sánh</p>
                                     </CardContent>
                                 </Card>
                             </div>
@@ -381,7 +381,7 @@ const ProductComparison = ({
 
                 {selectedProducts.length === 0 && (
                     <div className="text-center py-6 text-muted-foreground">
-                        Select products to compare with {currentProduct.name}
+                        Chọn các sản phẩm để so sánh với {currentProduct.name}
                     </div>
                 )}
             </CardContent>

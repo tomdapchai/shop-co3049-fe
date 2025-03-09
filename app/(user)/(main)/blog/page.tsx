@@ -120,7 +120,7 @@ export default function BlogPage() {
                 <main className="flex-1 space-y-8">
                     <div className="w-full flex justify-center items-center">
                         <Input
-                            placeholder="Search blogs..."
+                            placeholder="Tìm kiếm Blogs..."
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
                             className="w-[600px] border-2 border-slate-500 rounded-lg p-2"
@@ -176,11 +176,11 @@ export default function BlogPage() {
                                     </CardDescription>
                                     <Button
                                         variant="link"
-                                        className="text-md mt-4 px-0"
+                                        className="text-md mt-4 px-0 font-bold italic text-[#d0ad50] hover:text-[#b88e2f]"
                                         onClick={() => {
                                             router.push(`/blog/${post.blogId}`);
                                         }}>
-                                        Read More
+                                        Xem thêm...
                                     </Button>
                                 </CardContent>
                             </Card>

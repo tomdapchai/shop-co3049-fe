@@ -208,8 +208,8 @@ const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
                 }
             });
             toast({
-                title: "Item added to cart",
-                description: "Item added to cart successfully",
+                title: "Thành công!",
+                description: "Sản phẩm đã được thêm vào giỏ!",
                 variant: "default",
                 className: "bg-sub border-none",
             });

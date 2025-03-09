@@ -232,7 +232,7 @@ export default function ProductReviewCarousel({
         <div className="select-none relative w-full py-16 overflow-hidden bg-white">
             <div className="max-w-6xl mx-auto px-4">
                 <h1 className="text-3xl font-bold text-center mb-8">
-                    Customer Reviews
+                    FURNORA LUÔN ĐƯỢC KHÁCH HÀNG LỰA CHỌN VÀ TIN TƯỞNG!
                 </h1>
 
                 <div ref={carouselRef} className="relative h-[400px]">

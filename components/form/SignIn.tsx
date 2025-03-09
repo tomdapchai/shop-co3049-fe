@@ -124,13 +124,13 @@ const SignIn = ({ type }: { type: string }) => {
                             name="username"
                             render={({ field }) => (
                                 <FormItem className="flex w-full flex-col">
-                                    <FormLabel className="paragraph-semibold">
+                                    <FormLabel className="paragraph-semibold font-bold">
                                         Tên đăng nhập
                                     </FormLabel>
                                     <FormControl className="mt-1">
                                         <Input
                                             className="no-focus border"
-                                            placeholder="Enter your username here"
+                                            placeholder="Nhập tên đăng nhập tại đây"
                                             {...field}
                                         />
                                     </FormControl>
@@ -143,13 +143,13 @@ const SignIn = ({ type }: { type: string }) => {
                             name="password"
                             render={({ field }) => (
                                 <FormItem className="flex w-full flex-col">
-                                    <FormLabel className="paragraph-semibold">
+                                    <FormLabel className="paragraph-semibold font-bold">
                                         Mật khẩu
                                     </FormLabel>
                                     <FormControl className="mt-1">
                                         <Input
                                             className="no-fcous border"
-                                            placeholder="Enter your password here"
+                                            placeholder="Nhập mật khẩu tại đây"
                                             type="password"
                                             {...field}
                                         />
@@ -168,7 +168,7 @@ const SignIn = ({ type }: { type: string }) => {
             </CardContent>
             {type == "user" && (
                 <CardFooter className="text-sm flex gap-2">
-                    <p className="text-slate-400">Haven't had account yet?</p>
+                    <p className="text-slate-400">Bạn chưa có tài khoản?</p>
                     <Link
                         href={"/sign-up"}
                         className="underline text-sub hover:text-[#b88e2f]/80">

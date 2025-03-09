@@ -178,7 +178,7 @@ export default function AddressForm({
                     name="phoneNumber"
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel>Phone Number</FormLabel>
+                            <FormLabel>Số điện thoại</FormLabel>
                             <FormControl>
                                 <Input placeholder="0912345678" {...field} />
                             </FormControl>
@@ -191,7 +191,7 @@ export default function AddressForm({
                     name="streetAddress"
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel>Street Address</FormLabel>
+                            <FormLabel>Địa chỉ giao hàng</FormLabel>
                             <FormControl>
                                 <Input placeholder="123 Main St" {...field} />
                             </FormControl>
@@ -204,7 +204,7 @@ export default function AddressForm({
                     name="city"
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel>City</FormLabel>
+                            <FormLabel>Thành phố</FormLabel>
                             <FormControl>
                                 <Input
                                     placeholder="Ho Chi Minh City"
@@ -220,7 +220,7 @@ export default function AddressForm({
                     name="province"
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel>Province</FormLabel>
+                            <FormLabel>Tỉnh</FormLabel>
                             <FormControl>
                                 <RegionDropdown
                                     country={country}
@@ -232,7 +232,7 @@ export default function AddressForm({
                                     className="w-full border border-gray-300 rounded-md px-3 py-2"
                                     valueType="full"
                                     disableWhenEmpty={true}
-                                    defaultOptionLabel="Select Province"
+                                    defaultOptionLabel="Chọn tỉnh"
                                     labelType="full"
                                 />
                             </FormControl>
