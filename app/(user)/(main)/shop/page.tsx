@@ -51,13 +51,17 @@ const page = () => {
 
     useEffect(() => {
         if (query && query !== "") {
-            const filtered = products.filter((product) =>
-                (
+            /* products.map((product) => {
+                console.log(
                     product.name.toLowerCase() +
-                    product.tags.join(", ") +
-                    product.overview +
-                    product.slug
-                ).includes(query.toLowerCase())
+                        product.tags.join(", ") +
+                        product.overview
+                );
+            }); */
+            const filtered = products.filter((product) =>
+                (product.name.toLowerCase() + product.tags.join(", ")).includes(
+                    query.toLowerCase()
+                )
             );
             setQueryProducts(filtered);
         } else {
@@ -135,8 +139,8 @@ const page = () => {
                     <div className="flex justify-between gap-2 items-center h-fit">
                         <p>
                             Hiển thị {indexOfFirstProduct + 1} -{" "}
-                            {indexOfLastProduct} of {queryProducts.length}{" "}
-                            sản phẩm
+                            {indexOfLastProduct} of {queryProducts.length} sản
+                            phẩm
                         </p>
                     </div>
                     <div className="flex justify-between items-center gap-2">
