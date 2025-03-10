@@ -134,7 +134,7 @@ const page = ({ params }: { params: Promise<{ slug: string }> }) => {
             <div className="grid md:grid-cols-2 gap-8 mb-12">
                 {/* Product Images */}
                 <div className="flex flex-col md:flex-row gap-4">
-                    <div className="order-2 md:order-1 flex md:flex-col gap-4 overflow-x-auto md:overflow-x-visible">
+                    <div className="order-2 md:order-1 flex md:flex-col gap-4 overflow-x-auto md:overflow-x-visible max-h-[500px] overflow-y-auto custom-scrollbar">
                         {productImages.map((image, index) => (
                             <button
                                 key={index}
