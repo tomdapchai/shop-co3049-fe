@@ -280,6 +280,11 @@ const Header = () => {
                                             key={link.title}>
                                             <Link href={link.url}>
                                                 <Button
+                                                    onClick={() => {
+                                                        setMobileSheetOpen(
+                                                            false
+                                                        );
+                                                    }}
                                                     variant="ghost"
                                                     className="font-bold text-md p-0 m-0">
                                                     {link.title}

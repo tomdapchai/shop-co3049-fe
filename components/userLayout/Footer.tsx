@@ -20,9 +20,10 @@ const Footer = () => {
                             Nội Thất FURNORA
                         </h3>
                         <p className="text-gray-600 text-sm leading-relaxed">
-                            Nội Thất FURNORA là thương hiệu nội thất mang đến sự tinh tế và tiện nghi, 
-                            kết hợp thiết kế hiện đại với chất lượng bền bỉ, 
-                            giúp không gian sống của bạn trở nên ấm cúng và đầy phong cách.
+                            Nội Thất FURNORA là thương hiệu nội thất mang đến sự
+                            tinh tế và tiện nghi, kết hợp thiết kế hiện đại với
+                            chất lượng bền bỉ, giúp không gian sống của bạn trở
+                            nên ấm cúng và đầy phong cách.
                         </p>
                     </div>
 
@@ -64,7 +65,7 @@ const Footer = () => {
                                 <Link
                                     href="#"
                                     className="hover:text-gray-900 transition-colors">
-                                    Khách Hàng Thân Thiết – FURNista 
+                                    Khách Hàng Thân Thiết – FURNista
                                 </Link>
                             </li>
                             <li>
@@ -90,7 +91,8 @@ const Footer = () => {
                                         [Khu Vực Tp. Hồ Chí Minh]
                                     </p>
                                     <p>
-                                    15 Đường D5 P.25, Quận Bình Thạnh, TP Hồ Chí Minh, Việt Nam 
+                                        15 Đường D5 P.25, Quận Bình Thạnh, TP Hồ
+                                        Chí Minh, Việt Nam
                                     </p>
                                     <div className="flex items-center mt-1">
                                         <span className="font-medium mr-2">
@@ -104,8 +106,6 @@ const Footer = () => {
                                     </div>
                                 </div>
                             </div>
-
-                            
                         </div>
                     </div>
 
@@ -120,6 +120,8 @@ const Footer = () => {
                             <div className="mt-3 flex space-x-3">
                                 {socials?.map((social) => (
                                     <Link
+                                        target="_blank"
+                                        rel="noreferrer"
                                         href={social.info}
                                         key={social.id}
                                         className="w-10 h-10 rounded-full">
