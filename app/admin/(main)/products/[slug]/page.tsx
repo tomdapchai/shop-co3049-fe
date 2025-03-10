@@ -263,7 +263,6 @@ export default function ProductDetailPage() {
     };
 
     const handleSave = async (values: z.infer<typeof productSchema>) => {
-        console.log("Saving product:", values);
         try {
             setIsSaving(true);
             if (uploadedImages.length === 0) {
@@ -426,11 +425,26 @@ export default function ProductDetailPage() {
 
             const convertedDescription = convertToReact(processedDescription);
 
-            const { productId, shortDescription, fullDescription, ...rest } =
-                values;
+            const {
+                productId,
+                shortDescription,
+                fullDescription,
+                size,
+                ...rest
+            } = values;
 
             await updateProduct(productId, {
                 ...rest,
+                size: size.sort((a: string, b: string) => {
+                    const sizeOrder = {
+                        compact: 1,
+                        standard: 2,
+                        large: 3,
+                        oversized: 4,
+                    };
+                    // @ts-ignore
+                    return sizeOrder[a] - sizeOrder[b];
+                }),
                 overview: shortDescription,
                 description: convertedDescription,
                 descriptionOriginal: values.fullDescription,

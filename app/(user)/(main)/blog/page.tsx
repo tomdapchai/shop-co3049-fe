@@ -29,7 +29,7 @@ import { Input } from "@/components/ui/input";
 import { Separator } from "@radix-ui/react-separator";
 // todo: implement pagination
 
-const MAX_BLOGS_PER_PAGE = 3;
+const MAX_BLOGS_PER_PAGE = 6;
 export default function BlogPage() {
     const [posts, setPosts] = useState<BlogTrue[]>([]);
     const [thumbs, setThumbs] = useState<BlogImageCreate[]>([]);
@@ -52,46 +52,11 @@ export default function BlogPage() {
     }, []);
 
     // after getting all the blogs, get the thumbs
-    // useEffect(() => {
-    //     if (posts.length > 0) {
-    //         setTotalPages(Math.ceil(posts.length / MAX_BLOGS_PER_PAGE));
-    //         Promise.all(
-    //             posts.map(async (post) => {
-    //                 await getImagesFromBlog(post.blogId).then((data) => {
-    //                     if ("error" in data) {
-    //                         console.error(data.error);
-    //                         return;
-    //                     } else {
-    //                         const thumb = data.filter(
-    //                             (thumb) => thumb.isThumbnail == true
-    //                         );
-    //                         console.log("Thumbs:", thumb);
-    //                         setThumbs((prev) => [...prev, ...thumb]);
-    //                     }
-    //                 });
-    //             })
-    //         );
-    //     }
-    // }, [posts]);
-
-    // useEffect(() => {
-    //     // start combining the posts with the thumbs by index
-    //     if (
-    //         posts.length > 0 &&
-    //         thumbs.length > 0 &&
-    //         posts.length === thumbs.length
-    //     ) {
-    //         const combined = posts.map((post, index) => {
-    //             return {
-    //                 ...post,
-    //                 thumb: thumbs[index],
-    //             };
-    //         });
-    //         console.log("Combined:", combined);
-    //         setPostsWithThumbs(combined);
-    //         setLoading(false);
-    //     }
-    // }, [thumbs]);
+    useEffect(() => {
+        if (posts.length > 0) {
+            setTotalPages(Math.ceil(posts.length / MAX_BLOGS_PER_PAGE));
+        }
+    }, [posts]);
 
     if (isLoading) {
         return <div>Loading...</div>;
