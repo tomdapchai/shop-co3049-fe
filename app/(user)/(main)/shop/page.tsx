@@ -24,7 +24,7 @@ import {
 import ProductCard from "@/components/card/ProductCard";
 import { getAllProduct } from "@/services/ProductService";
 import { useProduct } from "@/context/ProductContext";
-import { LoadingSpinner } from "../(home)/page";
+import LoadingSpinner from "@/components/decoration/LoadingSpinner";
 
 const page = () => {
     const { products, loadingStates } = useProduct();

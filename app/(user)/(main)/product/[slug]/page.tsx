@@ -31,7 +31,7 @@ import { useRouter } from "next/navigation";
 import { useProduct } from "@/context/ProductContext";
 import ProductCard from "@/components/card/ProductCard";
 import ProductComparison from "@/components/decoration/ProductComparison";
-import { LoadingSpinner } from "../../(home)/page";
+import LoadingSpinner from "@/components/decoration/LoadingSpinner";
 
 const page = ({ params }: { params: Promise<{ slug: string }> }) => {
     const { addToCart } = useCart();

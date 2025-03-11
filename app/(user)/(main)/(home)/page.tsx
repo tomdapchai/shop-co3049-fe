@@ -17,12 +17,7 @@ import ForYou from "@/components/decoration/ForYou";
 import ProductReviewCarousel from "@/components/decoration/FeedbackCarousel";
 import { Separator } from "@radix-ui/react-separator";
 import ServiceFeatures from "@/components/userLayout/ServiceFeatures";
-
-export const LoadingSpinner = () => (
-    <div className="flex justify-center items-center w-full p-10">
-        <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-gray-900" />
-    </div>
-);
+import LoadingSpinner from "@/components/decoration/LoadingSpinner";
 
 const page = () => {
     const {
