@@ -257,7 +257,7 @@ export default function BlogCreator() {
                         await createBlogImage(values.blogId, {
                             src: image.src,
                             imageId: image.alt,
-                            isThumbnail: false,
+                            isThumbnail: 0,
                         }).then((res) => {
                             if ("error" in res) {
                                 toast({
@@ -283,7 +283,7 @@ export default function BlogCreator() {
                     createBlogImage(values.blogId, {
                         src: thumbnail,
                         imageId: uploadedThumbnail.alt,
-                        isThumbnail: true,
+                        isThumbnail: 1,
                     }).then((res) => {
                         if ("error" in res) {
                             toast({
