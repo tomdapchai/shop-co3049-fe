@@ -24,9 +24,10 @@ import {
 import ProductCard from "@/components/card/ProductCard";
 import { getAllProduct } from "@/services/ProductService";
 import { useProduct } from "@/context/ProductContext";
+import { LoadingSpinner } from "../(home)/page";
 
 const page = () => {
-    const { products } = useProduct();
+    const { products, loadingStates } = useProduct();
     const [sortBy, setSortBy] = useState("");
     const [filteredProducts, setFilteredProducts] = useState([]);
     const [currentProducts, setCurrentProducts] = useState<ProductDetail[]>([]);
@@ -44,20 +45,12 @@ const page = () => {
     const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
     const [queryProducts, setQueryProducts] = useState<ProductDetail[]>([]);
     useEffect(() => {
-        // fetch products
         if (searchParams) setQuery(searchParams[1]);
         else setQuery("");
     }, [searchParams]);
 
     useEffect(() => {
         if (query && query !== "") {
-            /* products.map((product) => {
-                console.log(
-                    product.name.toLowerCase() +
-                        product.tags.join(", ") +
-                        product.overview
-                );
-            }); */
             const filtered = products.filter((product) =>
                 (product.name.toLowerCase() + product.tags.join(", ")).includes(
                     query.toLowerCase()
@@ -68,7 +61,7 @@ const page = () => {
             console.log("No query");
             setQueryProducts(products);
         }
-    }, [query]);
+    }, [query, loadingStates.products]);
 
     useEffect(() => {
         setTotalPages(Math.ceil(queryProducts.length / productsPerPage));
@@ -179,71 +172,78 @@ const page = () => {
                     </div>
                 </div>
             </div>
-            <div className="w-full px-4 py-8 flex justify-center items-center flex-col">
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
-                    {currentProducts.map((product, index) => (
-                        <ProductCard
-                            key={index}
-                            name={product.name}
-                            overview={product.overview}
-                            price={Number(product.price)}
-                            slug={product.slug}
-                            image={product.images[0].src}
-                            size={product.size[0]}
-                            color={product.color[0]}
-                            rating={
-                                product.reviews.length > 0
-                                    ? product.reviews.reduce((acc, review) => {
-                                          return acc + review.rating;
-                                      }, 0) / product.reviews.length
-                                    : 0
-                            }
-                        />
-                    ))}
-                </div>
-                <Pagination className="mt-8">
-                    <PaginationContent>
-                        <PaginationItem>
-                            <PaginationPrevious
-                                href="#"
-                                onClick={(e) => {
-                                    e.preventDefault();
-                                    if (currentPage > 1)
-                                        paginate(currentPage - 1);
-                                }}
+            {loadingStates.products ? (
+                <LoadingSpinner />
+            ) : (
+                <div className="w-full px-4 py-8 flex justify-center items-center flex-col">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+                        {currentProducts.map((product, index) => (
+                            <ProductCard
+                                key={index}
+                                name={product.name}
+                                overview={product.overview}
+                                price={Number(product.price)}
+                                slug={product.slug}
+                                image={product.images[0].src}
+                                size={product.size[0]}
+                                color={product.color[0]}
+                                rating={
+                                    product.reviews.length > 0
+                                        ? product.reviews.reduce(
+                                              (acc, review) => {
+                                                  return acc + review.rating;
+                                              },
+                                              0
+                                          ) / product.reviews.length
+                                        : 0
+                                }
                             />
-                        </PaginationItem>
-                        {Array.from({ length: totalPages }, (_, i) => (
-                            <PaginationItem key={i + 1}>
-                                <PaginationLink
+                        ))}
+                    </div>
+                    <Pagination className="mt-8">
+                        <PaginationContent>
+                            <PaginationItem>
+                                <PaginationPrevious
                                     href="#"
-                                    className={`${
-                                        currentPage === i + 1
-                                            ? "bg-sub hover:bg-[#b88e2f]/90 hover:text-main text-main"
-                                            : "bg-main hover:bg-[#fff3e3]/90 hover:text-sub text-sub"
-                                    }`}
-                                    isActive={currentPage === i + 1}
                                     onClick={(e) => {
                                         e.preventDefault();
-                                        paginate(i + 1);
-                                    }}>
-                                    {i + 1}
-                                </PaginationLink>
+                                        if (currentPage > 1)
+                                            paginate(currentPage - 1);
+                                    }}
+                                />
                             </PaginationItem>
-                        ))}
-                        <PaginationItem>
-                            <PaginationNext
-                                href="#"
-                                onClick={(e) => {
-                                    e.preventDefault();
-                                    if (currentPage < totalPages)
-                                        paginate(currentPage + 1);
-                                }}
-                            />
-                        </PaginationItem>
-                    </PaginationContent>
-                </Pagination>
-            </div>
+                            {Array.from({ length: totalPages }, (_, i) => (
+                                <PaginationItem key={i + 1}>
+                                    <PaginationLink
+                                        href="#"
+                                        className={`${
+                                            currentPage === i + 1
+                                                ? "bg-sub hover:bg-[#b88e2f]/90 hover:text-main text-main"
+                                                : "bg-main hover:bg-[#fff3e3]/90 hover:text-sub text-sub"
+                                        }`}
+                                        isActive={currentPage === i + 1}
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            paginate(i + 1);
+                                        }}>
+                                        {i + 1}
+                                    </PaginationLink>
+                                </PaginationItem>
+                            ))}
+                            <PaginationItem>
+                                <PaginationNext
+                                    href="#"
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        if (currentPage < totalPages)
+                                            paginate(currentPage + 1);
+                                    }}
+                                />
+                            </PaginationItem>
+                        </PaginationContent>
+                    </Pagination>
+                </div>
+            )}
         </div>
     );
 };

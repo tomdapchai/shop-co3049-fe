@@ -2,9 +2,7 @@ import api from "@/api";
 import axios from "axios";
 import { Review } from "@/types";
 
-export const getAllReviews = async (): Promise<
-    Review[] | { error: string }
-> => {
+export const getAllReviews = async (): Promise<Review[]> => {
     try {
         const response = await api.get("api/review/routes.php");
         console.log("Backend Response:", response.data);
@@ -22,13 +20,13 @@ export const getAllReviews = async (): Promise<
         return res;
     } catch (error) {
         console.log("Error fetching reviews:", error);
-        return { error: "Error fetching reviews" };
+        return [];
     }
 };
 
 export const getReviewsByProductId = async (
     slug: string
-): Promise<Review[] | { error: string }> => {
+): Promise<Review[]> => {
     try {
         const response = await api.get(
             `api/review/routes.php?productId=${slug}`
@@ -53,7 +51,7 @@ export const getReviewsByProductId = async (
         return res;
     } catch (error) {
         console.log("Error fetching reviews:", error);
-        return { error: "Error fetching reviews" };
+        return [];
     }
 };
 

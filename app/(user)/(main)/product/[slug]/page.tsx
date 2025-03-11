@@ -31,10 +31,11 @@ import { useRouter } from "next/navigation";
 import { useProduct } from "@/context/ProductContext";
 import ProductCard from "@/components/card/ProductCard";
 import ProductComparison from "@/components/decoration/ProductComparison";
+import { LoadingSpinner } from "../../(home)/page";
 
 const page = ({ params }: { params: Promise<{ slug: string }> }) => {
     const { addToCart } = useCart();
-    const { products, extensions } = useProduct();
+    const { products, extensions, loadingStates } = useProduct();
     const { slug } = use(params);
     const { userId, isLoggedIn, user } = useAuth();
     const [product, setProduct] = useState<ProductDetail>();
@@ -442,82 +443,87 @@ const page = ({ params }: { params: Promise<{ slug: string }> }) => {
                         </div>
                     </div>
                 </TabsContent>
-                {extensions.find((ex) => ex.id == "price-comparison")
-                    ?.enabled && (
-                    <TabsContent
-                        value="comparision"
-                        className="space-y-4 w-full">
-                        <ProductComparison
-                            currentProduct={product}
-                            products={products}
-                        />
-                    </TabsContent>
-                )}
+                {!loadingStates.extensions &&
+                    extensions.find((ex) => ex.id == "price-comparison")
+                        ?.enabled && (
+                        <TabsContent
+                            value="comparision"
+                            className="space-y-4 w-full">
+                            <ProductComparison
+                                currentProduct={product}
+                                products={products}
+                            />
+                        </TabsContent>
+                    )}
             </Tabs>
 
             <Separator className="mt-10 mb-6" />
             <div className="w-full flex flex-col justify-center items-center">
                 <h1 className="text-2xl font-bold">SẢN PHẨM TƯƠNG TỰ</h1>
                 <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 xl:grid-cols-4 gap-4 mt-6">
-                    {products.filter((prod) => {
-                        // compare tags
-                        const intersection = prod.tags.filter((tag) =>
-                            product.tags.includes(tag)
-                        );
-                        return intersection.length > 0;
-                    }).length > 0
-                        ? products
-                              .filter((prod) => {
-                                  // compare tags
-                                  const intersection = prod.tags.filter((tag) =>
-                                      product.tags.includes(tag)
-                                  );
-                                  return intersection.length > 0;
-                              })
-                              .slice(0, 4)
-                              .map((p) => (
-                                  <ProductCard
-                                      key={p.slug}
-                                      name={p.name}
-                                      overview={p.overview}
-                                      price={p.price}
-                                      image={p.images[0].src}
-                                      slug={p.slug}
-                                      size={p.size[0]}
-                                      color={p.color[0]}
-                                      rating={
-                                          p.reviews.length > 0
-                                              ? p.reviews.reduce(
-                                                    (acc, review) => {
-                                                        return (
-                                                            acc + review.rating
-                                                        );
-                                                    },
-                                                    0
-                                                ) / p.reviews.length
-                                              : 0
-                                      }
-                                  />
-                              ))
-                        : products.slice(0, 4).map((p) => (
-                              <ProductCard
-                                  key={p.slug}
-                                  name={p.name}
-                                  overview={p.overview}
-                                  price={p.price}
-                                  image={p.images[0].src}
-                                  slug={p.slug}
-                                  size={p.size[0]}
-                                  color={p.color[0]}
-                                  rating={
-                                      p.reviews.length > 0
-                                          ? p.reviews.reduce((acc, review) => {
-                                                return acc + review.rating;
-                                            }, 0) / p.reviews.length
-                                          : 0
-                                  }
-                              />
-                          ))}
+                    {loadingStates.products ? (
+                        <LoadingSpinner />
+                    ) : products.filter((prod) => {
+                          // compare tags
+                          const intersection = prod.tags.filter((tag) =>
+                              product.tags.includes(tag)
+                          );
+                          return intersection.length > 0;
+                      }).length > 0 ? (
+                        products
+                            .filter((prod) => {
+                                // compare tags
+                                const intersection = prod.tags.filter((tag) =>
+                                    product.tags.includes(tag)
+                                );
+                                return intersection.length > 0;
+                            })
+                            .slice(0, 4)
+                            .map((p) => (
+                                <ProductCard
+                                    key={p.slug}
+                                    name={p.name}
+                                    overview={p.overview}
+                                    price={p.price}
+                                    image={p.images[0].src}
+                                    slug={p.slug}
+                                    size={p.size[0]}
+                                    color={p.color[0]}
+                                    rating={
+                                        p.reviews.length > 0
+                                            ? p.reviews.reduce(
+                                                  (acc, review) => {
+                                                      return (
+                                                          acc + review.rating
+                                                      );
+                                                  },
+                                                  0
+                                              ) / p.reviews.length
+                                            : 0
+                                    }
+                                />
+                            ))
+                    ) : (
+                        products.slice(0, 4).map((p) => (
+                            <ProductCard
+                                key={p.slug}
+                                name={p.name}
+                                overview={p.overview}
+                                price={p.price}
+                                image={p.images[0].src}
+                                slug={p.slug}
+                                size={p.size[0]}
+                                color={p.color[0]}
+                                rating={
+                                    p.reviews.length > 0
+                                        ? p.reviews.reduce((acc, review) => {
+                                              return acc + review.rating;
+                                          }, 0) / p.reviews.length
+                                        : 0
+                                }
+                            />
+                        ))
+                    )}
                 </div>
             </div>
         </div>

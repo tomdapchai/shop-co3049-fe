@@ -18,25 +18,54 @@ import ProductReviewCarousel from "@/components/decoration/FeedbackCarousel";
 import { Separator } from "@radix-ui/react-separator";
 import ServiceFeatures from "@/components/userLayout/ServiceFeatures";
 
+export const LoadingSpinner = () => (
+    <div className="flex justify-center items-center w-full p-10">
+        <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-gray-900" />
+    </div>
+);
+
 const page = () => {
-    const { products, advertisement, siteInfo, isAdShown, extensions } =
-        useProduct();
+    const {
+        products,
+        advertisement,
+        siteInfo,
+        isAdShown,
+        extensions,
+        isLoading,
+        loadingStates,
+    } = useProduct();
     const [productImages, setProductImages] = useState<ProductDetail[]>([]);
+
     useEffect(() => {
-        setProductImages(products.slice(0, 8));
+        if (products.length > 0) {
+            setProductImages(products.slice(0, 8));
+        }
+    }, [products]);
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
     }, []);
+
     const router = useRouter();
+
     return (
         <div
             style={{
                 background: siteInfo?.themeColor || "#ffffff",
             }}
             className="w-full h-full flex flex-col gap-10 pb-8">
-            {advertisement.enable &&
+            {/* Advertisement section with loader */}
+            {isLoading ? (
+                <></> // Don't show anything if loading
+            ) : (
+                advertisement?.enable &&
                 extensions.find((ex) => ex.id == "advertisement")?.enabled &&
                 !isAdShown && (
                     <AdvertisementPopup advertisement={advertisement} />
-                )}
+                )
+            )}
+
+            {/* Banner section */}
             <section
                 style={{
                     backgroundImage: `url(${
@@ -47,13 +76,15 @@ const page = () => {
                 <div className="flex flex-col bg-main space-y-8 w-[600px] max-md:w-[400px] max-sm:w-[300px] rounded-lg md:mr-40 p-10">
                     <div className="flex flex-col gap-4">
                         <p className="text-black font-bold text-lg">
-                        ✨SIÊU PHẨM MỚI RA MẮT!✨
+                            ✨SIÊU PHẨM MỚI RA MẮT!✨
                         </p>
                         <h1 className="text-7xl text-sub max-md:text-3xl font-bold">
                             Khám phá bộ sưu tập mới của chúng tôi
                         </h1>
                         <p className="font-bold">
-                        FURNORA giới thiệu bộ sưu tập mới với thiết kế tinh tế, hiện đại, giúp nâng tầm không gian sống của bạn.🏡💛
+                            FURNORA giới thiệu bộ sưu tập mới với thiết kế tinh
+                            tế, hiện đại, giúp nâng tầm không gian sống của
+                            bạn.🏡💛
                         </p>
                     </div>
 
@@ -65,19 +96,29 @@ const page = () => {
                 </div>
             </section>
 
-            {/* For you */}
-            {extensions.find((ex) => ex.id == "products-for-you")?.enabled && (
-                <section className="flex flex-col justify-center items-center w-full gap-14 max-md:p-4">
-                    <ForYou products={products} />
-                </section>
+            {/* For you section with loader */}
+            {loadingStates.extensions ? (
+                <LoadingSpinner />
+            ) : (
+                extensions.find((ex) => ex.id == "products-for-you")
+                    ?.enabled && (
+                    <section className="flex flex-col justify-center items-center w-full gap-14 max-md:p-4">
+                        <ForYou products={products} />
+                    </section>
+                )
             )}
 
+            {/* Categories section */}
             <section className="flex flex-col justify-center items-center w-full gap-14 max-md:p-4">
                 <div className="flex justify-center items-center flex-col">
-                    <h1 className="font-bold text-3xl">BẠN ĐANG TÌM KIẾM PHONG CÁCH MỚI CHO NGÔI NHÀ CỦA MÌNH?</h1>
+                    <h1 className="font-bold text-3xl">
+                        BẠN ĐANG TÌM KIẾM PHONG CÁCH MỚI CHO NGÔI NHÀ CỦA MÌNH?
+                    </h1>
                     <p className="text-gray-400 text-center">
-                        Sáng tạo một không gian sống đẹp và tiện nghi với các sản phẩm chất lượng của FURNORA. 
-                        <br /> Đến với FURNORA, bạn luôn có thể dễ dàng tìm thấy những sản phẩm sang trọng với giá cả phải chăng. <br />
+                        Sáng tạo một không gian sống đẹp và tiện nghi với các
+                        sản phẩm chất lượng của FURNORA.
+                        <br /> Đến với FURNORA, bạn luôn có thể dễ dàng tìm thấy
+                        những sản phẩm sang trọng với giá cả phải chăng. <br />
                     </p>
                 </div>
 
@@ -100,63 +141,81 @@ const page = () => {
                 </div>
             </section>
 
+            {/* Featured products section with loader */}
             <section className="flex flex-col justify-center items-center w-full gap-16">
                 <h1 className="font-bold text-4xl">SẢN PHẨM NỔI BẬT</h1>
-                <div className="flex flex-col justify-center items-center w-full gap-8">
-                    <div className="grid grid-cols-4 gap-4 max-lg:grid-cols-3 max-md:grid-cols-2 max-sm:grid-cols-1">
-                        {productImages.map((product) => (
-                            <ProductCard
-                                key={product.name}
-                                name={product.name}
-                                overview={product.overview}
-                                price={Number(product.price)}
-                                image={product.images[0].src}
-                                slug={product.slug}
-                                size={product.size[0]}
-                                color={product.color[0]}
-                                rating={
-                                    product.reviews.length > 0
-                                        ? product.reviews.reduce(
-                                              (acc, review) => {
-                                                  return acc + review.rating;
-                                              },
-                                              0
-                                          ) / product.reviews.length
-                                        : 0
-                                }
-                            />
-                        ))}
+                {loadingStates.products ? (
+                    <LoadingSpinner />
+                ) : (
+                    <div className="flex flex-col justify-center items-center w-full gap-8">
+                        <div className="grid grid-cols-4 gap-4 max-lg:grid-cols-3 max-md:grid-cols-2 max-sm:grid-cols-1">
+                            {productImages.map((product) => (
+                                <ProductCard
+                                    key={product.name}
+                                    name={product.name}
+                                    overview={product.overview}
+                                    price={Number(product.price)}
+                                    image={product.images[0].src}
+                                    slug={product.slug}
+                                    size={product.size[0]}
+                                    color={product.color[0]}
+                                    rating={
+                                        product.reviews.length > 0
+                                            ? product.reviews.reduce(
+                                                  (acc, review) => {
+                                                      return (
+                                                          acc + review.rating
+                                                      );
+                                                  },
+                                                  0
+                                              ) / product.reviews.length
+                                            : 0
+                                    }
+                                />
+                            ))}
+                        </div>
+                        <Link href="/shop" className="">
+                            <Button className="bg-main hover:bg-[#fff3e3]/70 px-10 py-6 shadow-lg border border-[#b88e2f]">
+                                <p className="text-sub font-bold">
+                                    KHÁM PHÁ THÊM
+                                </p>
+                            </Button>
+                        </Link>
                     </div>
-                    <Link href="/shop" className="">
-                        <Button className="bg-main hover:bg-[#fff3e3]/70 px-10 py-6 shadow-lg border border-[#b88e2f]">
-                            <p className="text-sub font-bold">
-                                KHÁM PHÁ THÊM
-                            </p>
-                        </Button>
-                    </Link>
-                </div>
+                )}
             </section>
 
-            {extensions.find((ex) => ex.id == "image-gallery")?.enabled && (
-                <section className="flex flex-col justify-center items-center w-full gap-8 bg-main px-4 py-6">
-                    <div className="flex flex-col justify-center items-center space-y-4">
-                        <p className="font-bold text-gray-400 text-lg">
-                            Nhanh tay sở hữu sản phẩm nổi bật với giá "hời"!
-                        </p>
-                        <h1 className="font-bold text-3xl">
-                            #FurnoraFurniture
-                        </h1>
-                    </div>
-                    <div className="w-full flex justify-center items-center">
-                        <Slideshow />
-                    </div>
-                </section>
+            {/* Image gallery section with loader */}
+            {loadingStates.extensions ? (
+                <LoadingSpinner />
+            ) : (
+                extensions.find((ex) => ex.id == "image-gallery")?.enabled && (
+                    <section className="flex flex-col justify-center items-center w-full gap-8 bg-main px-4 py-6">
+                        <div className="flex flex-col justify-center items-center space-y-4">
+                            <p className="font-bold text-gray-400 text-lg">
+                                Nhanh tay sở hữu sản phẩm nổi bật với giá "hời"!
+                            </p>
+                            <h1 className="font-bold text-3xl">
+                                #FurnoraFurniture
+                            </h1>
+                        </div>
+                        <div className="w-full flex justify-center items-center">
+                            <Slideshow />
+                        </div>
+                    </section>
+                )
             )}
 
-            {extensions.find((ex) => ex.id == "feedback-carousel")?.enabled && (
-                <section className="flex flex-col justify-center items-center w-full ">
-                    <ProductReviewCarousel products={products} />
-                </section>
+            {/* Feedback carousel section with loader */}
+            {loadingStates.extensions ? (
+                <LoadingSpinner />
+            ) : (
+                extensions.find((ex) => ex.id == "feedback-carousel")
+                    ?.enabled && (
+                    <section className="flex flex-col justify-center items-center w-full ">
+                        <ProductReviewCarousel products={products} />
+                    </section>
+                )
             )}
 
             <Separator className="border-b-2" />

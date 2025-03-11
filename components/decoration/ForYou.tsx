@@ -13,8 +13,21 @@ const ForYou = ({ products }: ForYouProps) => {
     );
 
     useEffect(() => {
-        const randomProducts = products.sort(() => 0.5 - Math.random());
-        setSuggestedProducts(randomProducts.slice(0, 4));
+        if (products.length > 0) {
+            const productsCopy = [...products];
+
+            for (let i = productsCopy.length - 1; i > 0; i--) {
+                // Generate a random index between 0 and i
+                const j = Math.floor(Math.random() * (i + 1));
+                // Swap elements at i and j
+                [productsCopy[i], productsCopy[j]] = [
+                    productsCopy[j],
+                    productsCopy[i],
+                ];
+            }
+
+            setSuggestedProducts(productsCopy.slice(0, 4));
+        }
     }, [products]);
 
     return (
