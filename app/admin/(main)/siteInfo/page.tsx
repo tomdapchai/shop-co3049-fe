@@ -612,13 +612,9 @@ export default function SiteInfo() {
                                                     process.env
                                                         .NEXT_PUBLIC_TINYMCE_API_KEY
                                                 }
-                                                onInit={(
-                                                    _evt: any,
-                                                    editor: any
-                                                ) =>
-                                                    (editorRef.current = editor)
-                                                }
-                                                initialValue={field.value}
+                                                onInit={(evt, editor) => {
+                                                    editorRef.current = editor;
+                                                }}
                                                 value={field.value}
                                                 init={{
                                                     height: 500,
@@ -632,9 +628,7 @@ export default function SiteInfo() {
                                                     toolbar:
                                                         "undo redo | accordion accordionremove | blocks fontfamily fontsize | bold italic underline strikethrough | align numlist bullist | link image | table media | lineheight outdent indent| forecolor backcolor removeformat | charmap emoticons | code fullscreen preview | pagebreak anchor codesample | ltr rtl",
                                                 }}
-                                                onEditorChange={(
-                                                    content: string
-                                                ) => {
+                                                onEditorChange={(content) => {
                                                     field.onChange(content);
                                                 }}
                                                 onBlur={field.onBlur}
