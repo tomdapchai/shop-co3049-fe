@@ -1,4 +1,3 @@
-// @ts-nocheck
 "use client";
 import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
@@ -81,6 +80,7 @@ const page = () => {
                     tags: data.tags,
                     blogId: data.blogId,
                     overview: data.overview || "",
+                    thumbnail: data.thumbnail,
                 });
             }
         });
@@ -197,6 +197,7 @@ const page = () => {
         if (!uploadedThumbnail!.src.startsWith("blob")) {
             await updateImageId({ imageId: oldAlt, newId: newAlt });
         }
+        // @ts-ignore
         setUploadedThumbnail((prev) => ({ ...prev, alt: newAlt }));
     };
 
@@ -228,7 +229,7 @@ const page = () => {
     const handleSave = async (data: z.infer<typeof blogSchema>) => {
         try {
             setIsSaving(true);
-            if (uploadedImages.length === 0) {
+            /* if (uploadedImages.length === 0) {
                 toast({
                     title: "Error",
                     description: "Please upload at least one image",
@@ -236,7 +237,7 @@ const page = () => {
                 });
                 setIsSaving(false);
                 return;
-            }
+            } */
 
             if (!uploadedThumbnail) {
                 toast({
@@ -305,7 +306,7 @@ const page = () => {
 
             // do the same but uploadThumbnail is one image only
 
-            var tmpThumbSrc = ""
+            var tmpThumbSrc = "";
 
             const neededUploadThumbnail = uploadedThumbnail.src.startsWith(
                 "blob"
@@ -316,7 +317,7 @@ const page = () => {
             if (neededUploadThumbnail) {
                 const url = await uploadToCDN(neededUploadThumbnail.file!);
                 if (typeof url === "string") {
-                    tmpThumbSrc = url
+                    tmpThumbSrc = url;
                     setUploadedThumbnail({
                         src: url,
                         alt: uploadedThumbnail.alt,
@@ -370,7 +371,8 @@ const page = () => {
                 content: convertedContent,
                 contentOriginal: data.content,
                 overview: data.overview,
-                thumbnail: tmpThumbSrc !== "" ? tmpThumbSrc : uploadedThumbnail.src,
+                thumbnail:
+                    tmpThumbSrc !== "" ? tmpThumbSrc : uploadedThumbnail.src,
             })
                 .then((res) => {
                     if ("error" in res) {

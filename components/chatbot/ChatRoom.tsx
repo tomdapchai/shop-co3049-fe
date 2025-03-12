@@ -30,10 +30,10 @@ export default function ChatRoom({ messages, setMessages }: ChatRoomProps) {
     const [isOpened, setIsOpened] = useState(false);
     const messagesEndRef = useRef<HTMLDivElement>(null);
     const [suggestedQuestions] = useState([
-        "What are the best furniture styles for small apartments?",
-        "How to choose the right sofa for my living room?",
-        "What materials are most durable for dining tables?",
-        "How to arrange furniture in an open floor plan?",
+        "Hãy gợi ý những món đồ phù hợp cho căn hộ 3 phòng ngủ của tôi.",
+        "Làm sao để chọn giường ngủ phù hợp với phòng ngủ?",
+        "Các chất liệu nào phù hợp cho một bàn ăn hiện đại?",
+        "Có cách nào để sắp xếp đồ đạc trong một không gian mở?",
     ]);
 
     const scrollToBottom = () => {

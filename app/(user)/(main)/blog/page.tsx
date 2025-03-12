@@ -45,7 +45,14 @@ export default function BlogPage() {
                     console.error(data.error);
                     return;
                 } else {
-                    setPosts(data);
+                    setPosts(
+                        data.sort((a: BlogTrue, b: BlogTrue) => {
+                            return (
+                                new Date(b.posted).getTime() -
+                                new Date(a.posted).getTime()
+                            );
+                        })
+                    );
                 }
             })
             .finally(() => setIsLoading(false));
