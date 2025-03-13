@@ -35,7 +35,6 @@ export function AdvertisementPopup({ advertisement }: AdvertisementPopupProps) {
                     aria-label="Close advertisement">
                     <X className="h-6 w-6" />
                 </button>
-
                 <Link
                     href={advertisement?.link || "#"}
                     className="block"
