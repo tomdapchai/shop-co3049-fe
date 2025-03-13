@@ -40,7 +40,7 @@ export function AdvertisementPopup({ advertisement }: AdvertisementPopupProps) {
                     href={advertisement?.link || "#"}
                     className="block"
                     onClick={() => setIsAdShown(true)}>
-                    <div className="relative h-fit w-[800px]">
+                    <div className="relative w-[800px] h-[600px]">
                         <Image
                             src={advertisement!.image || "/placeholder.svg"}
                             alt="Advertisement"
