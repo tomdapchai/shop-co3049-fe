@@ -90,7 +90,7 @@ export default function CheckoutPage() {
             address: `${streetAddress}, ${city}, ${province}`,
             products: cart,
             total: calculateTotal(),
-            discount: discount > 0 ? discount : undefined, // Only include if discount exists
+            discount: discount > 0 ? discount : 0, // Only include if discount exists
         })
             .then((res) => {
                 if ("error" in res) {
